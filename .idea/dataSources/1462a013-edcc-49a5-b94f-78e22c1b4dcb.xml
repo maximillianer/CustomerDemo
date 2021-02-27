@@ -789,8 +789,10 @@ false Zulu
     <database id="2" parent="1" name="customers">
       <ObjectId>16423</ObjectId>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>519</IntrospectionStateNumber>
+      <IntrospectionStateNumber>566</IntrospectionStateNumber>
       <Current>1</Current>
+      <Relations>sequence|table|16427|16429|1
+</Relations>
     </database>
     <database id="3" parent="1" name="postgres">
       <ObjectId>13442</ObjectId>
@@ -874,7 +876,7 @@ UC/10
 </Acl>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>520</IntrospectionStateNumber>
+      <IntrospectionStateNumber>567</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <extension id="19" parent="2" name="plpgsql">
@@ -974,46 +976,76 @@ UC/10
       <HandlerId>335</HandlerId>
       <Type>index</Type>
     </access-method>
-    <table id="31" parent="18" name="customers">
-      <ObjectId>16424</ObjectId>
+    <sequence id="31" parent="18" name="customers_id_seq">
+      <ObjectId>16427</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>518</StateNumber>
+      <StateNumber>549</StateNumber>
+      <DataType>bigint|0s</DataType>
+    </sequence>
+    <table id="32" parent="18" name="customers">
+      <ObjectId>16429</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>549</StateNumber>
     </table>
-    <column id="32" parent="31" name="id">
+    <column id="33" parent="32" name="id">
       <Position>1</Position>
-      <DataType>integer|0s</DataType>
-      <StateNumber>518</StateNumber>
-      <TypeId>23</TypeId>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>549</StateNumber>
+      <TypeId>20</TypeId>
+      <IdentityKind>by-default</IdentityKind>
     </column>
-    <column id="33" parent="31" name="first_name">
+    <column id="34" parent="32" name="first_name">
       <Position>2</Position>
-      <DataType>integer|0s</DataType>
-      <StateNumber>518</StateNumber>
-      <TypeId>23</TypeId>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>549</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
-    <column id="34" parent="31" name="last_name">
+    <column id="35" parent="32" name="last_name">
       <Position>3</Position>
-      <DataType>integer|0s</DataType>
-      <StateNumber>518</StateNumber>
-      <TypeId>23</TypeId>
+      <DataType>varchar(100)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>549</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
-    <column id="35" parent="31" name="date_of_birth">
+    <column id="36" parent="32" name="date_of_birth">
       <Position>4</Position>
-      <DataType>integer|0s</DataType>
-      <StateNumber>518</StateNumber>
-      <TypeId>23</TypeId>
+      <DataType>date|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>549</StateNumber>
+      <TypeId>1082</TypeId>
     </column>
-    <column id="36" parent="31" name="address">
+    <column id="37" parent="32" name="address">
       <Position>5</Position>
-      <DataType>integer|0s</DataType>
-      <StateNumber>518</StateNumber>
-      <TypeId>23</TypeId>
+      <DataType>varchar(1000)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>549</StateNumber>
+      <TypeId>1043</TypeId>
     </column>
-    <column id="37" parent="31" name="budget">
+    <column id="38" parent="32" name="budget">
       <Position>6</Position>
-      <DataType>integer|0s</DataType>
-      <StateNumber>518</StateNumber>
-      <TypeId>23</TypeId>
+      <DataType>numeric|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>549</StateNumber>
+      <TypeId>1700</TypeId>
     </column>
+    <index id="39" parent="32" name="customers_pkey">
+      <ObjectId>16435</ObjectId>
+      <StateNumber>549</StateNumber>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationIds>0</CollationIds>
+      <ClassIds>3124</ClassIds>
+    </index>
+    <key id="40" parent="32" name="customers_pkey">
+      <ObjectId>16436</ObjectId>
+      <StateNumber>549</StateNumber>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>customers_pkey</UnderlyingIndexName>
+    </key>
   </database-model>
 </dataSource>
