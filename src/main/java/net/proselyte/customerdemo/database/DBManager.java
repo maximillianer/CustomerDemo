@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +18,6 @@ import java.util.regex.Pattern;
 
 public class DBManager {
 
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static ArrayList<Customer> getAllCustomers(){ // отображение всех работников
         ArrayList<Customer> allCustomers = new ArrayList<>();
@@ -48,6 +48,10 @@ public class DBManager {
 
     public static ArrayList<Customer> getAllFirstNames(){ // отображение всех имён
         ArrayList<Customer> allFirstNames = new ArrayList<>();
+        Scanner in = new Scanner(System.in);
+        System.out.print("Input a firs_name: ");
+        String inName = in.nextLine();
+        in.close();
 
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
@@ -56,7 +60,7 @@ public class DBManager {
                     url,"postgres","6503");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where first_name = '"+br+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where first_name = '"+inName+"'");
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -75,15 +79,19 @@ public class DBManager {
 
     public static ArrayList<Customer> getAllLastNames(){ // отображение всех фамилий
         ArrayList<Customer> allLastNames = new ArrayList<>();
+        Scanner in = new Scanner(System.in);
+        System.out.print("Input a last_name: ");
+        String inName = in.nextLine();
+        in.close();
+
 
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(
                     url,"postgres","6503");
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers where last_name = '"+br+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers where last_name = '"+inName+"'");
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -98,19 +106,23 @@ public class DBManager {
             e.printStackTrace();
         }
         return allLastNames;
+
     }
 
     public static ArrayList<Customer> getAlldateOfBirth(){ // отображение всх дат рождений
         ArrayList<Customer> alldateOfBirth = new ArrayList<>();
+        Scanner in = new Scanner(System.in);
+        System.out.print("Input a budget: ");
+        int num = in.nextInt();
+        in.close();
 
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(
                     url,"postgres","6503");
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where date_of_birth = '"+br+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where date_of_birth = '"+num+"'");
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -130,15 +142,19 @@ public class DBManager {
 
     public static ArrayList<Customer> getAllBudget(){ // отображение всх зарплат
         ArrayList<Customer> allBudget = new ArrayList<>();
+        Scanner in = new Scanner(System.in);
+        System.out.print("Input a budget: ");
+        int num = in.nextInt();
+        in.close();
 
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
             Class.forName("org.postgresql.Driver");
             Connection con = DriverManager.getConnection(
                     url,"postgres","6503");
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where budget = '"+br+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where budget = '"+num+"'");
+            in.close();
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -153,6 +169,7 @@ public class DBManager {
             e.printStackTrace();
         }
         return allBudget;
+
     }
 
     public static void createCustomer(String first_name, String last_name, String date_of_birth, String address, int budget){
@@ -171,7 +188,7 @@ public class DBManager {
     }
 
 
-    public static void deleteCustomer(String id) {
+    public static void deleteCustomer(String id) { // удалить сотрудника
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
             Class.forName("org.postgresql.Driver");
@@ -190,7 +207,12 @@ public class DBManager {
 
     public static void main(String[] args) {
 
-        ArrayList<Customer> allBudget = new ArrayList<>();
+        ArrayList<Customer> allLastNames = new ArrayList<>();
+        Scanner in = new Scanner(System.in);
+        System.out.print("Input a last_name: ");
+        String inName = in.nextLine();
+        in.close();
+
 
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
@@ -198,7 +220,7 @@ public class DBManager {
             Connection con = DriverManager.getConnection(
                     url,"postgres","6503");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where budget = 234764");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers where last_name = '"+inName+"'");
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -206,16 +228,13 @@ public class DBManager {
                 customer.setLastname(rs.getString("Last_name"));
                 customer.setDate_of_birth(rs.getString("date_of_birth"));
                 customer.setAddress(rs.getString("address"));
-                customer.setBudget(rs.getBigDecimal("budget"));
-                allBudget.add(customer);
+                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
+                allLastNames.add(customer);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
-        System.out.println("table Customers: "+ allBudget);
-        System.out.println();
+        System.out.println("value:" + allLastNames);
 
     }
 }
