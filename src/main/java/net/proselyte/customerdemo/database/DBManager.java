@@ -61,6 +61,10 @@ public class DBManager {
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
                 customer.setFirstname(rs.getString("first_name"));
+                customer.setLastname(rs.getString("Last_name"));
+                customer.setDate_of_birth(rs.getString("date_of_birth"));
+                customer.setAddress(rs.getString("address"));
+                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
                 allFirstNames.add(customer);
             }
         }catch (Exception e){
@@ -83,7 +87,11 @@ public class DBManager {
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
-                customer.setLastname(rs.getString("last_name"));
+                customer.setFirstname(rs.getString("first_name"));
+                customer.setLastname(rs.getString("Last_name"));
+                customer.setDate_of_birth(rs.getString("date_of_birth"));
+                customer.setAddress(rs.getString("address"));
+                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
                 allLastNames.add(customer);
             }
         }catch (Exception e){
@@ -106,7 +114,11 @@ public class DBManager {
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
+                customer.setFirstname(rs.getString("first_name"));
+                customer.setLastname(rs.getString("Last_name"));
                 customer.setDate_of_birth(rs.getString("date_of_birth"));
+                customer.setAddress(rs.getString("address"));
+                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
                 alldateOfBirth.add(customer);
             }
         }catch (Exception e){
@@ -130,7 +142,11 @@ public class DBManager {
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
-                customer.setBudget(rs.getInt("budget"));
+                customer.setFirstname(rs.getString("first_name"));
+                customer.setLastname(rs.getString("Last_name"));
+                customer.setDate_of_birth(rs.getString("date_of_birth"));
+                customer.setAddress(rs.getString("address"));
+                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
                 allBudget.add(customer);
             }
         }catch (Exception e){
@@ -167,5 +183,39 @@ public class DBManager {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    //это тестовый метод который я создал только для проверки работы подключения каждого метода.  потом удалю
+
+    public static void main(String[] args) {
+
+        ArrayList<Customer> allBudget = new ArrayList<>();
+
+        try{
+            String url = "jdbc:postgresql://localhost:5432/customers";
+            Class.forName("org.postgresql.Driver");
+            Connection con = DriverManager.getConnection(
+                    url,"postgres","6503");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where budget = 234764");
+            while (rs.next()){
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setFirstname(rs.getString("first_name"));
+                customer.setLastname(rs.getString("Last_name"));
+                customer.setDate_of_birth(rs.getString("date_of_birth"));
+                customer.setAddress(rs.getString("address"));
+                customer.setBudget(rs.getBigDecimal("budget"));
+                allBudget.add(customer);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        System.out.println("table Customers: "+ allBudget);
+        System.out.println();
+
     }
 }
