@@ -14,9 +14,9 @@ import org.eclipse.swt.custom.ScrolledComposite;
 public class mySWTApplication {
     protected Shell shell;
     private Text txtSearchOfName;
-    private Text text;
-    private Text text_1;
-    private Text text_2;
+    private Text textSearchOfLastname;
+    private Text textSearchOfDate;
+    private Text textSearchOfBuget;
     private Table table;
 
     /**
@@ -61,57 +61,57 @@ public class mySWTApplication {
 
         Composite composite = new Composite(shell, SWT.NONE);
 
-        Label label = new Label(composite, SWT.NONE);
-        label.setBounds(10, 10, 95, 15);
-        label.setText("поиск по имени");
+        Label SearchOfName = new Label(composite, SWT.NONE);
+        SearchOfName.setBounds(10, 10, 95, 15);
+        SearchOfName.setText("поиск по имени");
 
-        Label label_1 = new Label(composite, SWT.NONE);
-        label_1.setText("поиск по фамилии");
-        label_1.setBounds(252, 10, 110, 15);
+        Label SearchOfLastname = new Label(composite, SWT.NONE);
+        SearchOfLastname.setText("поиск по фамилии");
+        SearchOfLastname.setBounds(252, 10, 110, 15);
 
-        Label label_2 = new Label(composite, SWT.NONE);
-        label_2.setText("поиск по дате рождения");
-        label_2.setBounds(10, 47, 141, 21);
+        Label SearchOfDate = new Label(composite, SWT.NONE);
+        SearchOfDate.setText("поиск по дате рождения");
+        SearchOfDate.setBounds(10, 47, 141, 21);
 
-        Label label_3 = new Label(composite, SWT.NONE);
-        label_3.setText("поиск по зарплате");
-        label_3.setBounds(252, 47, 110, 15);
+        Label SearchOfBuget = new Label(composite, SWT.NONE);
+        SearchOfBuget.setText("поиск по зарплате");
+        SearchOfBuget.setBounds(252, 47, 110, 15);
 
         txtSearchOfName = new Text(composite, SWT.BORDER);
         txtSearchOfName.setText("введите имя");
         txtSearchOfName.setBounds(113, 10, 123, 21);
 
-        text = new Text(composite, SWT.BORDER);
-        text.setText("введите фамилию");
-        text.setBounds(378, 10, 141, 21);
+        textSearchOfLastname = new Text(composite, SWT.BORDER);
+        textSearchOfLastname.setText("введите фамилию");
+        textSearchOfLastname.setBounds(378, 10, 141, 21);
 
-        text_1 = new Text(composite, SWT.BORDER);
-        text_1.setText("введите дату");
-        text_1.setBounds(376, 47, 143, 21);
+        textSearchOfDate = new Text(composite, SWT.BORDER);
+        textSearchOfDate.setText("введите дату");
+        textSearchOfDate.setBounds(376, 47, 143, 21);
 
-        text_2 = new Text(composite, SWT.BORDER);
-        text_2.setText("введите число");
-        text_2.setBounds(152, 47, 84, 21);
+        textSearchOfBuget = new Text(composite, SWT.BORDER);
+        textSearchOfBuget.setText("введите число");
+        textSearchOfBuget.setBounds(152, 47, 84, 21);
 
-        Button button = new Button(composite, SWT.RADIO);
-        button.setBounds(23, 98, 40, 16);
-        button.setText("и");
+        Button buttonAND = new Button(composite, SWT.RADIO);
+        buttonAND.setBounds(23, 98, 40, 16);
+        buttonAND.setText("и");
 
-        Button button_1 = new Button(composite, SWT.RADIO);
-        button_1.setBounds(69, 98, 48, 16);
-        button_1.setText("или");
+        Button buttonOR = new Button(composite, SWT.RADIO);
+        buttonOR.setBounds(69, 98, 48, 16);
+        buttonOR.setText("или");
 
-        Label label_4 = new Label(composite, SWT.NONE);
-        label_4.setText("выберете вид поиска");
-        label_4.setBounds(10, 77, 123, 15);
+        Label AND_OR = new Label(composite, SWT.NONE);
+        AND_OR.setText("выберете вид поиска");
+        AND_OR.setBounds(10, 77, 123, 15);
 
-        Button btnNewButton = new Button(composite, SWT.NONE);
-        btnNewButton.setBounds(378, 87, 75, 25);
-        btnNewButton.setText("поиск");
+        Button SearchButton = new Button(composite, SWT.NONE);
+        SearchButton.setBounds(378, 87, 75, 25);
+        SearchButton.setText("поиск");
 
-        Button btnNewButton_1 = new Button(composite, SWT.NONE);
-        btnNewButton_1.setBounds(179, 109, 129, 21);
-        btnNewButton_1.setText("показать всех");
+        Button AllSearchButton = new Button(composite, SWT.NONE);
+        AllSearchButton.setBounds(179, 109, 129, 21);
+        AllSearchButton.setText("показать всех");
 
         ScrolledComposite scrolledComposite = new ScrolledComposite(composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         scrolledComposite.setToolTipText("");
