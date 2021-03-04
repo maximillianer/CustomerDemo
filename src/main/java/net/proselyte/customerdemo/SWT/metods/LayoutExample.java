@@ -105,6 +105,8 @@ public class LayoutExample {
         composite.setLayout(new FillLayout());
         Label labelA = new Label(composite, SWT.CENTER);
         labelA.setText("Левая панель");
+
+
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     private void createBodyRight(Composite parent)
