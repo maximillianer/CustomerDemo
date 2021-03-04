@@ -24,6 +24,7 @@ public class CustomerRestControllerV1 {
     @Autowired
     private CustomerService customerService;
 
+    // получить customer по ID
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long customerId){
         if (customerId == null){
@@ -38,6 +39,7 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
 
+    // добавить customer
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Customer> saveCustomer(@RequestBody @Valid Customer customer){
         HttpHeaders headers = new HttpHeaders();
@@ -49,6 +51,7 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<>(customer, headers, HttpStatus.CREATED);
     }
 
+    //получить customer
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Customer> updateCustomer(@RequestBody @Valid Customer customer, UriComponentsBuilder builder){
         HttpHeaders headers = new HttpHeaders();
@@ -61,6 +64,7 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<>(customer, headers, HttpStatus.OK);
     }
 
+    //удалить customer
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
      public ResponseEntity<Customer> deleteCustomer (@PathVariable("id") Long id){
         Customer customer = this.customerService.getById(id);
@@ -73,7 +77,8 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
      }
 
-     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+     //получить всех customers
+     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // получить customers
      private ResponseEntity<List<Customer>> getAllCustomers(){
          List<Customer> customers = this.customerService.getAll();
 

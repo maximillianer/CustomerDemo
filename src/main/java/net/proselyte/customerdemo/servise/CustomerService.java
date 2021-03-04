@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface CustomerService {
 
-    Customer getById(Long id);
+    Customer getById(Long id); //найти по ID
 
-    void save (Customer customer);
+    void save (Customer customer); //сохранить customer
 
-    void delete(Long id);
+    void delete(Long id); // удалить
 
-    List<Customer> getAll();
+    List<Customer> getAll(); //получить всех
 }
