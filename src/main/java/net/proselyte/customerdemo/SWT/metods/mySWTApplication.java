@@ -135,6 +135,22 @@ public class mySWTApplication {
         textTableResult.setText("вывод результата поиска");
 
         // Handling when users click the button.
+        b1.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                DBManager dbm = new DBManager();
+                if (textFirstName != null)
+                {
+                    textTableResult.setText(dbm.getAllFirstNames(textFirstName.getText()).toString());
+                } else if (textLastName != null){
+                    textTableResult.setText(dbm.getAllLastNames(textLastName.getText()).toString());
+                }else textTableResult.setText("введите данные для поиска");
+                // Causes the receiver to be resized to its preferred size.
+            }
+
+        });
+        // Handling when users click the button.
         b2.addSelectionListener(new SelectionAdapter() {
 
             @Override
