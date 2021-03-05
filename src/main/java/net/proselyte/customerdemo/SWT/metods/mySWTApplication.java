@@ -1,6 +1,7 @@
 package net.proselyte.customerdemo.SWT.metods;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
@@ -53,6 +54,12 @@ public class mySWTApplication {
         buttonAND.setLayoutData(new RowData(40, SWT.DEFAULT));
         buttonOR.setText("или");
 
+        Composite parent = new Composite(shell, SWT.NONE);
+        FillLayout fillLayout= new FillLayout();
+        fillLayout.type= SWT.HORIZONTAL;
+        parent.setLayout(fillLayout);
+        Button b1 = new Button(parent, SWT.NONE);
+        b1.setText("Поиск");
 
         // Text with multi lines and show vertiacal scroll.
         Text textTableResult = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
