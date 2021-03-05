@@ -46,12 +46,8 @@ public class DBManager {
         return allCustomers;
     }
 
-    public static ArrayList<Customer> getAllFirstNames(){ // отображение всех имён
+    public static ArrayList<Customer> getAllFirstNames(String textFirstName){ // отображение всех имён
         ArrayList<Customer> allFirstNames = new ArrayList<>();
-        Scanner in = new Scanner(System.in);
-        System.out.print("Input a firs_name: ");
-        String inName = in.nextLine();
-        in.close();
 
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
@@ -60,7 +56,7 @@ public class DBManager {
                     url,"postgres","6503");
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where first_name = '"+inName+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where first_name = '"+textFirstName+"'");
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -77,13 +73,8 @@ public class DBManager {
         return allFirstNames;
     }
 
-    public static ArrayList<Customer> getAllLastNames(){ // отображение всех фамилий
+    public static ArrayList<Customer> getAllLastNames(String textLastName){ // отображение всех фамилий
         ArrayList<Customer> allLastNames = new ArrayList<>();
-        Scanner in = new Scanner(System.in);
-        System.out.print("Input a last_name: ");
-        String inName = in.nextLine();
-        in.close();
-
 
         try{
             String url = "jdbc:postgresql://localhost:5432/customers";
@@ -91,7 +82,7 @@ public class DBManager {
             Connection con = DriverManager.getConnection(
                     url,"postgres","6503");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers where last_name = '"+inName+"'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers where last_name = '"+textLastName+"'");
             while (rs.next()){
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -201,40 +192,41 @@ public class DBManager {
             e.printStackTrace();
         }
     }
+}
 
 
     //это тестовый метод который я создал только для проверки работы подключения каждого метода.  потом удалю
 
-    public static void main(String[] args) {
-
-        ArrayList<Customer> allLastNames = new ArrayList<>();
-        Scanner in = new Scanner(System.in);
-        System.out.print("Input a last_name: ");
-        String inName = in.nextLine();
-        in.close();
-
-
-        try{
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url,"postgres","6503");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers where last_name = '"+inName+"'");
-            while (rs.next()){
-                Customer customer = new Customer();
-                customer.setId(rs.getInt("id"));
-                customer.setFirstname(rs.getString("first_name"));
-                customer.setLastname(rs.getString("Last_name"));
-                customer.setDate_of_birth(rs.getString("date_of_birth"));
-                customer.setAddress(rs.getString("address"));
-                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
-                allLastNames.add(customer);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        System.out.println("value:" + allLastNames);
-
-    }
-}
+//    public static void main(String[] args) {
+//
+//        ArrayList<Customer> allLastNames = new ArrayList<>();
+//        Scanner in = new Scanner(System.in);
+//        System.out.print("Input a last_name: ");
+//        String inName = in.nextLine();
+//        in.close();
+//
+//
+//        try{
+//            String url = "jdbc:postgresql://localhost:5432/customers";
+//            Class.forName("org.postgresql.Driver");
+//            Connection con = DriverManager.getConnection(
+//                    url,"postgres","6503");
+//            Statement stmt = con.createStatement();
+//            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers where last_name = '"+inName+"'");
+//            while (rs.next()){
+//                Customer customer = new Customer();
+//                customer.setId(rs.getInt("id"));
+//                customer.setFirstname(rs.getString("first_name"));
+//                customer.setLastname(rs.getString("Last_name"));
+//                customer.setDate_of_birth(rs.getString("date_of_birth"));
+//                customer.setAddress(rs.getString("address"));
+//                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
+//                allLastNames.add(customer);
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        System.out.println("value:" + allLastNames);
+//
+//    }
+//}
