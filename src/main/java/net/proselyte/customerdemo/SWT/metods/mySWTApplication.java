@@ -143,9 +143,9 @@ public class mySWTApplication {
                 if (textFirstName != null)
                 {
                     textTableResult.setText(dbm.getAllFirstNames(textFirstName.getText()).toString());
-                } else if (textLastName != null){
+                } if (textLastName != null){
                     textTableResult.setText(dbm.getAllLastNames(textLastName.getText()).toString());
-                }else textTableResult.setText("введите данные для поиска");
+                } textTableResult.setText("введите данные для поиска");
                 // Causes the receiver to be resized to its preferred size.
             }
 
