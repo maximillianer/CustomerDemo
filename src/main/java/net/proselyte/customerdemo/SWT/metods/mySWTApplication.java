@@ -21,7 +21,6 @@ public class mySWTApplication {
     public static void main(String[] args) {
 
 
-
         Display display = new Display();
         Shell shell = new Shell(display);
         shell.setText("SWT System)");
@@ -32,21 +31,31 @@ public class mySWTApplication {
         rowLayout.spacing = 15;
         shell.setLayout(rowLayout);
 
-
+        Label labelFirstName = new Label(shell, SWT.NONE);
+        labelFirstName.setText("введите имя для поиска:");
         // Text with border
         Text textFirstName = new Text(shell, SWT.BORDER);
-        textFirstName.setText("введите имя");
+        textFirstName.setText("пример: John");
         textFirstName.setLayoutData(new RowData(250, SWT.DEFAULT));
+
+        Label labelastName = new Label(shell, SWT.NONE);
+        labelastName.setText("введите фамилию для поиска:");
 
         // Text with border
         Text textLastName = new Text(shell, SWT.BORDER);
-        textLastName.setText("введите фамилию");
+        textLastName.setText("пример: Connor");
         textLastName.setLayoutData(new RowData(250, SWT.DEFAULT));
+
+        Label labeBudget = new Label(shell, SWT.NONE);
+        labeBudget.setText("введите число для поиска по зарплате:");
 
         // Text with border
         Text textBudget = new Text(shell, SWT.BORDER);
-        textBudget.setText("введите размер зарплаты");
+        textBudget.setText("пример: 45870");
         textBudget.setLayoutData(new RowData(250, SWT.DEFAULT));
+
+        Label SelectOperator = new Label(shell, SWT.NONE);
+        SelectOperator.setText("выберете оператор бля поиска:");
 
         Button buttonAND = new Button(shell, SWT.RADIO);
         buttonAND.setLayoutData(new RowData(40, SWT.DEFAULT));
@@ -63,28 +72,28 @@ public class mySWTApplication {
         labelAnswer.setForeground(display.getSystemColor(SWT.COLOR_BLUE));
 
 
-        buttonAND.addSelectionListener(new SelectionAdapter()  {
+        buttonAND.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Button source=  (Button) e.getSource();
+                Button source = (Button) e.getSource();
 
-                if(source.getSelection())  {
-                    labelAnswer.setText("Вы выбрали поиск с оператором - "+ source.getText());
+                if (source.getSelection()) {
+                    labelAnswer.setText("Вы выбрали поиск с оператором - " + source.getText());
                     labelAnswer.pack();
                 }
             }
 
         });
 
-        buttonOR.addSelectionListener(new SelectionAdapter()  {
+        buttonOR.addSelectionListener(new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                Button source=  (Button) e.getSource();
+                Button source = (Button) e.getSource();
 
-                if(source.getSelection())  {
-                    labelAnswer.setText("Вы выбрали поиск с оператором - "+ source.getText());
+                if (source.getSelection()) {
+                    labelAnswer.setText("Вы выбрали поиск с оператором - " + source.getText());
                     labelAnswer.pack();
                 }
             }
@@ -92,8 +101,8 @@ public class mySWTApplication {
         });
 
         Composite parent = new Composite(shell, SWT.NONE);
-        FillLayout fillLayout= new FillLayout();
-        fillLayout.type= SWT.HORIZONTAL;
+        FillLayout fillLayout = new FillLayout();
+        fillLayout.type = SWT.HORIZONTAL;
         parent.setLayout(fillLayout);
         Button b1 = new Button(parent, SWT.NONE);
         b1.setText("поиск");
@@ -107,8 +116,6 @@ public class mySWTApplication {
         textTableResult.setText("вывод результата поиска");
 
         textTableResult.setLayoutData(new RowData(920, 500));
-
-
 
         shell.setSize(1500, 800);
         shell.open();
