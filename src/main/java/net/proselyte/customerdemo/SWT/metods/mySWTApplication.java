@@ -1,5 +1,7 @@
 package net.proselyte.customerdemo.SWT.metods;
 
+import net.proselyte.customerdemo.database.DBManager;
+import net.proselyte.customerdemo.model.Customer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -7,6 +9,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
+
+import java.util.ArrayList;
 
 public class mySWTApplication {
 
@@ -35,7 +39,7 @@ public class mySWTApplication {
         labelFirstName.setText("введите имя для поиска:");
         // Text with border
         Text textFirstName = new Text(shell, SWT.BORDER);
-        textFirstName.setText("пример: John");
+        textFirstName.setText("Michelina");
         textFirstName.setLayoutData(new RowData(250, SWT.DEFAULT));
 
         Label labelastName = new Label(shell, SWT.NONE);
@@ -43,7 +47,7 @@ public class mySWTApplication {
 
         // Text with border
         Text textLastName = new Text(shell, SWT.BORDER);
-        textLastName.setText("пример: Connor");
+        textLastName.setText("Schubert");
         textLastName.setLayoutData(new RowData(250, SWT.DEFAULT));
 
         Label labeBudget = new Label(shell, SWT.NONE);
@@ -51,7 +55,7 @@ public class mySWTApplication {
 
         // Text with border
         Text textBudget = new Text(shell, SWT.BORDER);
-        textBudget.setText("пример: 45870");
+        textBudget.setText("233639");
         textBudget.setLayoutData(new RowData(250, SWT.DEFAULT));
 
         Label SelectOperator = new Label(shell, SWT.NONE);
@@ -106,15 +110,40 @@ public class mySWTApplication {
         parent.setLayout(fillLayout);
         Button b1 = new Button(parent, SWT.NONE);
         b1.setText("поиск");
+        // Handling when users click the button.
+        b1.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                DBManager dbManager = new DBManager();
+                label.setText(dbManager.toString());
+                // Causes the receiver to be resized to its preferred size.
+                label.pack();
+            }
+
+        });
         Button b2 = new Button(parent, SWT.NONE);
         b2.setText("показать всех");
+
         Button b3 = new Button(parent, SWT.NONE);
         b3.setText("очистить");
+
 
         // Text with multi lines and show vertiacal scroll.
         Text textTableResult = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
         textTableResult.setText("вывод результата поиска");
 
+        // Handling when users click the button.
+        b2.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                DBManager dbm = new DBManager();
+                textTableResult.setText(dbm.getAllCustomers().toString());
+                // Causes the receiver to be resized to its preferred size.
+            }
+
+        });
         textTableResult.setLayoutData(new RowData(920, 500));
 
         shell.setSize(1500, 800);
