@@ -1,6 +1,8 @@
 package net.proselyte.customerdemo.SWT.metods;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
@@ -53,6 +55,41 @@ public class mySWTApplication {
         Button buttonOR = new Button(shell, SWT.RADIO);
         buttonAND.setLayoutData(new RowData(40, SWT.DEFAULT));
         buttonOR.setText("или");
+
+        Label label = new Label(shell, SWT.NONE);
+        label.setText("Select Titles: ");
+
+        Label labelAnswer = new Label(shell, SWT.NONE);
+        labelAnswer.setForeground(display.getSystemColor(SWT.COLOR_BLUE));
+
+
+        buttonAND.addSelectionListener(new SelectionAdapter()  {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Button source=  (Button) e.getSource();
+
+                if(source.getSelection())  {
+                    labelAnswer.setText("Вы выбрали поиск с оператором - "+ source.getText());
+                    labelAnswer.pack();
+                }
+            }
+
+        });
+
+        buttonOR.addSelectionListener(new SelectionAdapter()  {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Button source=  (Button) e.getSource();
+
+                if(source.getSelection())  {
+                    labelAnswer.setText("Вы выбрали поиск с оператором - "+ source.getText());
+                    labelAnswer.pack();
+                }
+            }
+
+        });
 
         Composite parent = new Composite(shell, SWT.NONE);
         FillLayout fillLayout= new FillLayout();
