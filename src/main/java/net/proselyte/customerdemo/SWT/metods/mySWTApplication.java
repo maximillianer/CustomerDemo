@@ -1,5 +1,6 @@
 package net.proselyte.customerdemo.SWT.metods;
 
+import lombok.ToString;
 import net.proselyte.customerdemo.database.DBManager;
 import net.proselyte.customerdemo.model.Customer;
 import org.eclipse.swt.SWT;
@@ -140,6 +141,16 @@ public class mySWTApplication {
             public void widgetSelected(SelectionEvent arg0) {
                 DBManager dbm = new DBManager();
                 textTableResult.setText(dbm.getAllCustomers().toString());
+                // Causes the receiver to be resized to its preferred size.
+            }
+
+        });
+        // Handling when users click the button.
+        b3.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                textTableResult.setText("");
                 // Causes the receiver to be resized to its preferred size.
             }
 
