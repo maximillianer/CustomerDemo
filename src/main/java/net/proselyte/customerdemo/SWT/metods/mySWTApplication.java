@@ -1,128 +1,75 @@
 package net.proselyte.customerdemo.SWT.metods;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.*;
 
 public class mySWTApplication {
-    protected Shell shell;
-    private Text txtSearchOfName;
-    private Text textSearchOfLastname;
-    private Text textSearchOfDate;
-    private Text textSearchOfBuget;
-    private Table table;
+
 
     /**
      * Launch the application.
      *
      * @param args
      */
+
+
     public static void main(String[] args) {
-        try {
-            mySWTApplication window = new mySWTApplication();
-            window.open();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    /**
-     * Open the window.
-     */
-    public void open() {
-        Display display = Display.getDefault();
-        createContents();
-        shell.open();
-        shell.layout();
-        while (!shell.isDisposed()) {
-            if (!display.readAndDispatch()) {
-                display.sleep();
-            }
-        }
-    }
 
-    /**
-     * Create contents of the window.
-     */
-    protected void createContents() {
-        shell = new Shell();
-        shell.setModified(true);
-        shell.setEnabled(false);
-        shell.setSize(567, 579);
-        shell.setText("SWT Application");
-        shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-        Composite composite = new Composite(shell, SWT.NONE);
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        shell.setText("SWT System)");
 
-        Label SearchOfName = new Label(composite, SWT.NONE);
-        SearchOfName.setBounds(10, 10, 95, 15);
-        SearchOfName.setText("поиск по имени");
+        RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
+        rowLayout.marginLeft = 10;
+        rowLayout.marginTop = 10;
+        rowLayout.spacing = 15;
+        shell.setLayout(rowLayout);
 
-        Label SearchOfLastname = new Label(composite, SWT.NONE);
-        SearchOfLastname.setText("поиск по фамилии");
-        SearchOfLastname.setBounds(252, 10, 110, 15);
 
-        Label SearchOfDate = new Label(composite, SWT.NONE);
-        SearchOfDate.setText("поиск по дате рождения");
-        SearchOfDate.setBounds(10, 47, 141, 21);
+        // Text with border
+        Text textFirstName = new Text(shell, SWT.BORDER);
+        textFirstName.setText("введите имя");
+        textFirstName.setLayoutData(new RowData(250, SWT.DEFAULT));
 
-        Label SearchOfBuget = new Label(composite, SWT.NONE);
-        SearchOfBuget.setText("поиск по зарплате");
-        SearchOfBuget.setBounds(252, 47, 110, 15);
+        // Text with border
+        Text textLastName = new Text(shell, SWT.BORDER);
+        textLastName.setText("введите фамилию");
+        textLastName.setLayoutData(new RowData(250, SWT.DEFAULT));
 
-        txtSearchOfName = new Text(composite, SWT.BORDER);
-        txtSearchOfName.setText("введите имя");
-        txtSearchOfName.setBounds(113, 10, 123, 21);
+        // Text with border
+        Text textBudget = new Text(shell, SWT.BORDER);
+        textBudget.setText("введите размер зарплаты");
+        textBudget.setLayoutData(new RowData(250, SWT.DEFAULT));
 
-        textSearchOfLastname = new Text(composite, SWT.BORDER);
-        textSearchOfLastname.setText("введите фамилию");
-        textSearchOfLastname.setBounds(378, 10, 141, 21);
-
-        textSearchOfDate = new Text(composite, SWT.BORDER);
-        textSearchOfDate.setText("введите дату");
-        textSearchOfDate.setBounds(376, 47, 143, 21);
-
-        textSearchOfBuget = new Text(composite, SWT.BORDER);
-        textSearchOfBuget.setText("введите число");
-        textSearchOfBuget.setBounds(152, 47, 84, 21);
-
-        Button buttonAND = new Button(composite, SWT.RADIO);
-        buttonAND.setBounds(23, 98, 40, 16);
+        Button buttonAND = new Button(shell, SWT.RADIO);
+        buttonAND.setLayoutData(new RowData(40, SWT.DEFAULT));
         buttonAND.setText("и");
 
-        Button buttonOR = new Button(composite, SWT.RADIO);
-        buttonOR.setBounds(69, 98, 48, 16);
+        Button buttonOR = new Button(shell, SWT.RADIO);
+        buttonAND.setLayoutData(new RowData(40, SWT.DEFAULT));
         buttonOR.setText("или");
 
-        Label AND_OR = new Label(composite, SWT.NONE);
-        AND_OR.setText("выберете вид поиска");
-        AND_OR.setBounds(10, 77, 123, 15);
 
-        Button SearchButton = new Button(composite, SWT.NONE);
-        SearchButton.setBounds(378, 87, 75, 25);
-        SearchButton.setText("поиск");
+        // Text with multi lines and show vertiacal scroll.
+        Text textTableResult = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+        textTableResult.setText("вывод результата поиска");
 
-        Button AllSearchButton = new Button(composite, SWT.NONE);
-        AllSearchButton.setBounds(179, 109, 129, 21);
-        AllSearchButton.setText("показать всех");
+        textTableResult.setLayoutData(new RowData(920, 500));
 
-        ScrolledComposite scrolledComposite = new ScrolledComposite(composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-        scrolledComposite.setToolTipText("");
-        scrolledComposite.setAlwaysShowScrollBars(true);
-        scrolledComposite.setBounds(10, 136, 548, 398);
-        scrolledComposite.setExpandHorizontal(true);
-        scrolledComposite.setExpandVertical(true);
 
-        table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION);
-        table.setBounds(10, 136, 524, 398);
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
+
+        shell.setSize(1000, 800);
+        shell.open();
+        while (!shell.isDisposed()) {
+            if (!display.readAndDispatch())
+                display.sleep();
+        }
+        display.dispose();
     }
+
 }
+
