@@ -96,7 +96,11 @@ public class mySWTApplication {
         fillLayout.type= SWT.HORIZONTAL;
         parent.setLayout(fillLayout);
         Button b1 = new Button(parent, SWT.NONE);
-        b1.setText("Поиск");
+        b1.setText("поиск");
+        Button b2 = new Button(parent, SWT.NONE);
+        b2.setText("показать всех");
+        Button b3 = new Button(parent, SWT.NONE);
+        b3.setText("очистить");
 
         // Text with multi lines and show vertiacal scroll.
         Text textTableResult = new Text(shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
@@ -106,7 +110,7 @@ public class mySWTApplication {
 
 
 
-        shell.setSize(1000, 800);
+        shell.setSize(1500, 800);
         shell.open();
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch())
