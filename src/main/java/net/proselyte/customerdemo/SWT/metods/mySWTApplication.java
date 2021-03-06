@@ -11,8 +11,11 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static net.proselyte.customerdemo.database.DBManager.GetAllParam;
 
 public class mySWTApplication {
 
@@ -133,11 +136,14 @@ public class mySWTApplication {
                         " " + conditioins[2] + " " + conditioins[3] + " = " + conditioins[4] + " " + conditioins[5] +
                         " " + conditioins[6] + " = " + conditioins[7]);
                 System.out.println(query);
-                String a = textFirstName.getText(); // get search value
-                String b = textLastName.getText();
-                String c = textBudget.getText();
-                Boolean d = operator;
-                //    textTableResult.setText(String.valueOf(dbm.GetAllParam(a, b, c, d)));
+
+                try {
+                    textTableResult.setText(String.valueOf(GetAllParam(query.toString())));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 //textTableResult.setText(dbm.getAllFirstNames(textFirstName.getText()).toString() + "\n" + dbm.getAllFirstNames(textLastName.getText()).toString());
                 // Causes the receiver to be resized to its preferred size.
             }
