@@ -46,18 +46,13 @@ public class mySWTApplication {
 
         // Text with border
         Text textFirstName = new Text(shell, SWT.BORDER);
-        textFirstName.setText("Michelina");
+            textFirstName.setText("Michelina");
         textFirstName.setLayoutData(new RowData(250, SWT.DEFAULT));
 
-        // Group
-        Group titleGroup = new Group(shell, SWT.NONE);
-        titleGroup.setLayout(new RowLayout(SWT.VERTICAL));
-        titleGroup.setText("Select operator");
-
-        Button buttonAND = new Button(titleGroup, SWT.RADIO);
-        buttonAND.setText("AND");
-        Button buttonOR = new Button(titleGroup, SWT.RADIO);
-        buttonOR.setText("OR");
+        //Create a dropdown Combo operators
+        Combo comboOperator1 = new Combo(shell, SWT.DROP_DOWN);
+        String[] itemsOperator1 = new String[] {"AND", "OR"};
+        comboOperator1.setItems(itemsOperator1);
 
         //Create a dropdown Combo
         Combo combo2 = new Combo(shell, SWT.DROP_DOWN);
@@ -69,15 +64,10 @@ public class mySWTApplication {
         textLastName.setText("Schubert");
         textLastName.setLayoutData(new RowData(250, SWT.DEFAULT));
 
-        // Group
-        Group titleGroup2 = new Group(shell, SWT.NONE);
-        titleGroup2.setLayout(new RowLayout(SWT.VERTICAL));
-        titleGroup2.setText("Select operator");
-
-        Button buttonAND2 = new Button(titleGroup2, SWT.RADIO);
-        buttonAND2.setText("AND");
-        Button buttonOR2 = new Button(titleGroup2, SWT.RADIO);
-        buttonOR2.setText("OR");
+        //Create a dropdown Combo operators
+        Combo comboOperator2 = new Combo(shell, SWT.DROP_DOWN);
+        String[] itemsOperator2 = new String[] {"AND", "OR"};
+        comboOperator2.setItems(itemsOperator2);
 
         //Create a dropdown Combo
         Combo combo3 = new Combo(shell, SWT.DROP_DOWN);
@@ -88,7 +78,6 @@ public class mySWTApplication {
         Text textBudget = new Text(shell, SWT.BORDER);
         textBudget.setText("233639");
         textBudget.setLayoutData(new RowData(250, SWT.DEFAULT));
-
 
 //-----------------------------------------------------------
 
@@ -120,11 +109,32 @@ public class mySWTApplication {
             @Override
             public void widgetSelected(SelectionEvent arg0) {
                 DBManager dbm = new DBManager();
-                String a = textFirstName.getText();
+                int idx = combo1.getSelectionIndex(); // index of select combo
+                String searchItem1 = combo1.getItem(idx); // search criteria
+                int idx2 = combo2.getSelectionIndex(); // index of select combo
+                String searchItem2 = combo2.getItem(idx2); // search criteria
+                int idx3 = combo3.getSelectionIndex(); // index of select combo
+                String searchItem3 = combo3.getItem(idx3); // search criteria
+                int idx4 = comboOperator1.getSelectionIndex(); // index of select combo
+                String searchItem4 = comboOperator1.getItem(idx4); // search criteria operator
+                int idx5 = comboOperator2.getSelectionIndex(); // index of select combo
+                String searchItem5 = comboOperator2.getItem(idx5); // search criteria operator
+                String [] conditioins = new String[9];
+                conditioins[0] = searchItem1;
+                conditioins[1] = textFirstName.getText();
+                conditioins[2] = searchItem4;
+                conditioins[3] = searchItem2;
+                conditioins[4] = textLastName.getText();
+                conditioins[5] = searchItem5;
+                conditioins[6] = searchItem3;
+                conditioins[7] = searchItem3;
+                conditioins[8] = textBudget.getText();
+                for (int i =0; i < conditioins.length -1; i++) System.out.println(conditioins[i]);
+                String a = textFirstName.getText(); // get search value
                 String b = textLastName.getText();
                 String c = textBudget.getText();
                 Boolean d = operator;
-                textTableResult.setText(String.valueOf(dbm.GetAllParam(a, b, c, d)));
+                    textTableResult.setText(String.valueOf(dbm.GetAllParam(a, b, c, d)));
                 //textTableResult.setText(dbm.getAllFirstNames(textFirstName.getText()).toString() + "\n" + dbm.getAllFirstNames(textLastName.getText()).toString());
                 // Causes the receiver to be resized to its preferred size.
             }
