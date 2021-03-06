@@ -178,36 +178,32 @@ public class DBManager {
         }
     }
 
-    public static ArrayList<Customer> GetAllParam(String textFirstName, String textLastName, String textBudget, Boolean operator) { // поиск по всем параметрам с учётом оператора "и" "или"
-        ArrayList<Customer> allParam = new ArrayList<>();
+   public static ArrayList<Customer> GetAllParam(String query) throws ClassNotFoundException, SQLException { // поиск по всем параметрам с учётом оператора "и" "или"
+       ArrayList<Customer> allParam = new ArrayList<>();
 
-        try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            if (operator && textFirstName != null || textLastName != null || textBudget != null) {
-                ResultSet rs = stmt.executeQuery("SELECT * FROM customers WHERE first_name = '" + textFirstName + "' AND last_name = '"
-                        + textLastName + "' AND budget = '" + textBudget + "' ");
-                while (rs.next()) {
-                    Customer customer = new Customer();
-                    customer.setId(rs.getInt("id"));
-                    customer.setFirstname(rs.getString("first_name"));
-                    customer.setLastname(rs.getString("Last_name"));
-                    customer.setDate_of_birth(rs.getString("date_of_birth"));
-                    customer.setAddress(rs.getString("address"));
-                    customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
-                    allParam.add(customer);
-                }
-            } else {
+       try {
+           String url = "jdbc:postgresql://localhost:5432/customers";
+           Class.forName("org.postgresql.Driver");
+           Connection con = DriverManager.getConnection(
+                   url, "postgres", "6503");
+           Statement stmt = con.createStatement();
+           ResultSet rs = stmt.executeQuery(query);
+               while (rs.next()) {
+                   Customer customer = new Customer();
+                   customer.setId(rs.getInt("id"));
+                   customer.setFirstname(rs.getString("first_name"));
+                   customer.setLastname(rs.getString("Last_name"));
+                   customer.setDate_of_birth(rs.getString("date_of_birth"));
+                   customer.setAddress(rs.getString("address"));
+                   customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
+                   allParam.add(customer);
+               }
 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return allParam;
-    }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       return allParam;
+   }
 }
 
 
