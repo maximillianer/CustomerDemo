@@ -128,12 +128,16 @@ public class mySWTApplication {
                 conditioins[5] = searchItem5;
                 conditioins[6] = searchItem3;
                 conditioins[7] = textBudget.getText();
-                for (int i =0; i < conditioins.length; i++) System.out.println(conditioins[i]);
+                for (int i =0; i < conditioins.length; i++) System.out.println(conditioins[i]);//проверка значений
+                StringBuilder query = new StringBuilder("SELECT * FROM customers WHERE " + conditioins[0] + " = " + conditioins[1] +
+                        " " + conditioins[2] + " " + conditioins[3] + " = " + conditioins[4] + " " + conditioins[5] +
+                        " " + conditioins[6] + " = " + conditioins[7]);
+                System.out.println(query);
                 String a = textFirstName.getText(); // get search value
                 String b = textLastName.getText();
                 String c = textBudget.getText();
                 Boolean d = operator;
-                    textTableResult.setText(String.valueOf(dbm.GetAllParam(a, b, c, d)));
+                //    textTableResult.setText(String.valueOf(dbm.GetAllParam(a, b, c, d)));
                 //textTableResult.setText(dbm.getAllFirstNames(textFirstName.getText()).toString() + "\n" + dbm.getAllFirstNames(textLastName.getText()).toString());
                 // Causes the receiver to be resized to its preferred size.
             }
