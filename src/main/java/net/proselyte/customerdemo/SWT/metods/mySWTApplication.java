@@ -119,7 +119,7 @@ public class mySWTApplication {
                 String searchItem4 = comboOperator1.getItem(idx4); // search criteria operator
                 int idx5 = comboOperator2.getSelectionIndex(); // index of select combo
                 String searchItem5 = comboOperator2.getItem(idx5); // search criteria operator
-                String [] conditioins = new String[9];
+                String [] conditioins = new String[8];
                 conditioins[0] = searchItem1;
                 conditioins[1] = textFirstName.getText();
                 conditioins[2] = searchItem4;
@@ -127,9 +127,8 @@ public class mySWTApplication {
                 conditioins[4] = textLastName.getText();
                 conditioins[5] = searchItem5;
                 conditioins[6] = searchItem3;
-                conditioins[7] = searchItem3;
-                conditioins[8] = textBudget.getText();
-                for (int i =0; i < conditioins.length -1; i++) System.out.println(conditioins[i]);
+                conditioins[7] = textBudget.getText();
+                for (int i =0; i < conditioins.length; i++) System.out.println(conditioins[i]);
                 String a = textFirstName.getText(); // get search value
                 String b = textLastName.getText();
                 String c = textBudget.getText();
