@@ -8,7 +8,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 
-// ТЕСТОВЫЙ ВАРИАНТ
 
 public class DBManager {
 
