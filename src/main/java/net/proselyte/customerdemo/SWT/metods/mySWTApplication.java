@@ -131,7 +131,7 @@ public class mySWTApplication {
                 conditioins[5] = searchItem5;
                 conditioins[6] = searchItem3;
                 conditioins[7] = textBudget.getText();
-                for (int i =0; i < conditioins.length; i++) System.out.println(conditioins[i]);//проверка значений
+                for (int i =0; i < conditioins.length; i++) System.out.println(conditioins[i]);//testing
                 StringBuilder query = new StringBuilder("SELECT * FROM customers WHERE " + conditioins[0] + " = '" + conditioins[1] +
                         "' " + conditioins[2] + " " + conditioins[3] + " = '" + conditioins[4] + "' " + conditioins[5] +
                         " " + conditioins[6] + " = '" + conditioins[7] + "'");
@@ -144,8 +144,7 @@ public class mySWTApplication {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
-                //textTableResult.setText(dbm.getAllFirstNames(textFirstName.getText()).toString() + "\n" + dbm.getAllFirstNames(textLastName.getText()).toString());
-                // Causes the receiver to be resized to its preferred size.
+
             }
 
         });
