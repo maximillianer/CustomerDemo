@@ -4,6 +4,8 @@ import lombok.ToString;
 import net.proselyte.customerdemo.database.DBManager;
 import net.proselyte.customerdemo.model.Customer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -19,7 +21,20 @@ import static net.proselyte.customerdemo.database.DBManager.GetAllParam;
 
 public class mySWTApplication {
 
-
+    public static void SetPlaceholder(Combo field, String text){
+        field.addPaintListener( new PaintListener() {
+            @Override
+            public void paintControl( PaintEvent event ) {
+                if( field.getText().isEmpty() ) {
+                    int x = 1; // indent some pixels
+                    int y = 1; // center vertically
+                    event.gc.drawText( text, x, y );
+                    field.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
+                }
+                else field.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
+            }
+        } );
+    }
 
     /**
      * Launch the application.
@@ -45,42 +60,53 @@ public class mySWTApplication {
         //Create a dropdown Combo
         Combo combo1 = new Combo(shell, SWT.DROP_DOWN);
         String[] items1 = new String[] {"first_name", "last_name", "date_of_birth", "budget"};
+        combo1.setLayoutData(new RowData(100, SWT.DEFAULT));
         combo1.setItems(items1);
+        SetPlaceholder(combo1, "выберете поле");
 
         // Text with border
         Text textFirstName = new Text(shell, SWT.BORDER);
-            textFirstName.setText("Michelina");
-        textFirstName.setLayoutData(new RowData(250, SWT.DEFAULT));
+        textFirstName.setText("Michelina");
+        textFirstName.setLayoutData(new RowData(200, SWT.DEFAULT));
 
         //Create a dropdown Combo operators
         Combo comboOperator1 = new Combo(shell, SWT.DROP_DOWN);
         String[] itemsOperator1 = new String[] {"AND", "OR"};
+        comboOperator1.setLayoutData(new RowData(110, SWT.DEFAULT));
         comboOperator1.setItems(itemsOperator1);
+        SetPlaceholder(comboOperator1, "выберете оператор");
 
         //Create a dropdown Combo
         Combo combo2 = new Combo(shell, SWT.DROP_DOWN);
         String[] items2 = new String[] {"first_name", "last_name", "date_of_birth", "budget"};
+        combo2.setLayoutData(new RowData(100, SWT.DEFAULT));
         combo2.setItems(items2);
+        SetPlaceholder(combo2, "выберете поле");
+
 
         // Text with border
         Text textLastName = new Text(shell, SWT.BORDER);
         textLastName.setText("Schubert");
-        textLastName.setLayoutData(new RowData(250, SWT.DEFAULT));
+        textLastName.setLayoutData(new RowData(200, SWT.DEFAULT));
 
         //Create a dropdown Combo operators
         Combo comboOperator2 = new Combo(shell, SWT.DROP_DOWN);
         String[] itemsOperator2 = new String[] {"AND", "OR"};
+        comboOperator2.setLayoutData(new RowData(110, SWT.DEFAULT));
         comboOperator2.setItems(itemsOperator2);
+        SetPlaceholder(comboOperator2, "выберете оператор");
 
         //Create a dropdown Combo
         Combo combo3 = new Combo(shell, SWT.DROP_DOWN);
         String[] items3 = new String[] {"first_name", "last_name", "date_of_birth", "budget"};
+        combo3.setLayoutData(new RowData(100, SWT.DEFAULT));
         combo3.setItems(items3);
+        SetPlaceholder(combo3, "выберете поле");
 
         // Text with border
         Text textBudget = new Text(shell, SWT.BORDER);
         textBudget.setText("233639");
-        textBudget.setLayoutData(new RowData(250, SWT.DEFAULT));
+        textBudget.setLayoutData(new RowData(200, SWT.DEFAULT));
 
 //-----------------------------------------------------------
 
@@ -106,6 +132,8 @@ public class mySWTApplication {
 
         Button b3 = new Button(parent, SWT.NONE);
         b3.setText("очистить");
+
+
         // Handling when users click the button.
         b1.addSelectionListener(new SelectionAdapter() {
 
