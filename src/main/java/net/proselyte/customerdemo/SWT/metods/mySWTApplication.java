@@ -166,6 +166,7 @@ public class mySWTApplication {
                 System.out.println(query);
 
                 try {
+                    String param = String.valueOf(GetAllParam(query.toString()));
                     textTableResult.setText(String.valueOf(GetAllParam(query.toString())));
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
