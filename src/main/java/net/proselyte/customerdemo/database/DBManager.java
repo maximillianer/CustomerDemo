@@ -1,6 +1,5 @@
 package net.proselyte.customerdemo.database;
 
-import net.proselyte.customerdemo.SWT.metods.mySWTApplication;
 import net.proselyte.customerdemo.model.Customer;
 
 import java.math.BigDecimal;
@@ -8,20 +7,20 @@ import java.sql.*;
 import java.util.ArrayList;
 
 
+public class DBManager implements DBManagerInterface {
 
-public class DBManager {
+    DBConnection db;
+
+    public DBManager() {
+        this.db = new DBConnection("jdbc:postgresql://localhost:5432/customers", "org.postgresql.Driver", "postgres", "6503");
+    }
 
 
-    public static ArrayList<Customer> getAllCustomers() { // отображение всех работников
+    public ArrayList<Customer> getAllCustomers() { // отображение всех работников
         ArrayList<Customer> allCustomers = new ArrayList<>();
 
         try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers");
+            ResultSet rs = this.db.execute("SELECT * FROM customers");
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -39,16 +38,11 @@ public class DBManager {
         return allCustomers;
     }
 
-    public static ArrayList<Customer> getAllFirstNames(String textFirstName) { // отображение всех имён
+    public ArrayList<Customer> getAllFirstNames(String textFirstName) { // отображение всех имён
         ArrayList<Customer> allFirstNames = new ArrayList<>();
 
         try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers WHERE first_name = '" + textFirstName + "'");
+            ResultSet rs = this.db.execute("SELECT * FROM customers WHERE first_name = '" + textFirstName + "'");
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -65,16 +59,11 @@ public class DBManager {
         return allFirstNames;
     }
 
-    public static ArrayList<Customer> getAllLastNames(String textLastName) { // отображение всех фамилий
+    public ArrayList<Customer> getAllLastNames(String textLastName) { // отображение всех фамилий
         ArrayList<Customer> allLastNames = new ArrayList<>();
 
         try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers.public.customers WHERE last_name = '" + textLastName + "'");
+            ResultSet rs = this.db.execute("SELECT * FROM customers.public.customers WHERE last_name = '" + textLastName + "'");
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -92,17 +81,12 @@ public class DBManager {
 
     }
 
-    public static ArrayList<Customer> getAlldateOfBirth(String date) { // отображение всх дат рождений
+    public ArrayList<Customer> getAlldateOfBirth(String date) { // отображение всх дат рождений
         ArrayList<Customer> alldateOfBirth = new ArrayList<>();
 
 
         try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers WHERE date_of_birth = '" + date + "'");
+            ResultSet rs = this.db.execute("SELECT * FROM customers WHERE date_of_birth = '" + date + "'");
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -120,16 +104,11 @@ public class DBManager {
     }
 
 
-    public static ArrayList<Customer> getAllBudget(String textBudget) { // отображение всх зарплат
+    public ArrayList<Customer> getAllBudget(String textBudget) { // отображение всх зарплат
         ArrayList<Customer> allBudget = new ArrayList<>();
 
         try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM customers where budget = '" + textBudget + "'");
+            ResultSet rs = this.db.execute("SELECT * FROM customers where budget = '" + textBudget + "'");
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
@@ -147,15 +126,10 @@ public class DBManager {
 
     }
 
-    public static void createCustomer(String first_name, String last_name, String date_of_birth, String address, int budget) {
+    public void createCustomer(String first_name, String last_name, String date_of_birth, String address, int budget) {
 
         try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            stmt.execute("INSERT INTO `customers` (`first_name`, `last_name`, `date_of_birth`, `address`, `budget`) VALUES ('" + first_name + "', '" + last_name + "', '" + date_of_birth + "', '" + address + "', '" + budget + "')");
+            ResultSet rs = this.db.execute("INSERT INTO `customers` (`first_name`, `last_name`, `date_of_birth`, `address`, `budget`) VALUES ('" + first_name + "', '" + last_name + "', '" + date_of_birth + "', '" + address + "', '" + budget + "')");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,46 +137,36 @@ public class DBManager {
     }
 
 
-    public static void deleteCustomer(String id) { // удалить сотрудника
+    public void deleteCustomer(String id) { // удалить сотрудника
         try {
-            String url = "jdbc:postgresql://localhost:5432/customers";
-            Class.forName("org.postgresql.Driver");
-            Connection con = DriverManager.getConnection(
-                    url, "postgres", "6503");
-            Statement stmt = con.createStatement();
-            stmt.execute("UPDATE `customers` WHERE (`id` = '" + id + "');");
+            ResultSet rs = this.db.execute("UPDATE `customers` WHERE (`id` = '" + id + "');");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-   public static ArrayList<Customer> GetAllParam(String query) throws ClassNotFoundException, SQLException { // поиск по всем параметрам с учётом оператора "и" "или"
-       ArrayList<Customer> allParam = new ArrayList<>();
+    public ArrayList<Customer> GetAllParam(String query) throws ClassNotFoundException, SQLException { // поиск по всем параметрам с учётом оператора "и" "или"
+        ArrayList<Customer> allParam = new ArrayList<>();
 
-       try {
-           String url = "jdbc:postgresql://localhost:5432/customers";
-           Class.forName("org.postgresql.Driver");
-           Connection con = DriverManager.getConnection(
-                   url, "postgres", "6503");
-           Statement stmt = con.createStatement();
-           ResultSet rs = stmt.executeQuery(query);
-               while (rs.next()) {
-                   Customer customer = new Customer();
-                   customer.setId(rs.getInt("id"));
-                   customer.setFirstname(rs.getString("first_name"));
-                   customer.setLastname(rs.getString("Last_name"));
-                   customer.setDate_of_birth(rs.getString("date_of_birth"));
-                   customer.setAddress(rs.getString("address"));
-                   customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
-                   allParam.add(customer);
-               }
+        try {
+            ResultSet rs = this.db.execute(query);
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setFirstname(rs.getString("first_name"));
+                customer.setLastname(rs.getString("Last_name"));
+                customer.setDate_of_birth(rs.getString("date_of_birth"));
+                customer.setAddress(rs.getString("address"));
+                customer.setBudget(BigDecimal.valueOf(rs.getInt("budget")));
+                allParam.add(customer);
+            }
 
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       return allParam;
-   }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allParam;
+    }
 }
 
 
