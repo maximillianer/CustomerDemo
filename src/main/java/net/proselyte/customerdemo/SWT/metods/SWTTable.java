@@ -72,7 +72,7 @@ public class SWTTable {
         return query; // строка запроса SQL
     }
 
-    public static void SetPlaceholder(Combo field, String text) {           // метод для подстановки текста по умолчанию (placeholder)
+    public static void SetPlaceholder(Combo field, String text) { // метод для подстановки текста по умолчанию (placeholder)
         field.addPaintListener(new PaintListener() {
             @Override
             public void paintControl(PaintEvent event) {
