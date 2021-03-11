@@ -22,9 +22,15 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static net.proselyte.customerdemo.database.DBManager.GetAllParam;
 
 public class SWTTable {
+
+    DBManager dbManager;
+
+    SWTTable(){
+        this.dbManager = new DBManager();
+    }
+
     public static int conditionRows;
     public static Map<Integer, Combo> conditionsAttributes = new HashMap<Integer, Combo>(); //массив атрибутов поиска имя-фамилия и т.д.
     public static Map<Integer, Text> conditionsValues = new HashMap<Integer, Text>();      //массив значений ввода в строке поиска
@@ -77,8 +83,8 @@ public class SWTTable {
             @Override
             public void paintControl(PaintEvent event) {
                 if (field.getText().isEmpty()) {
-                    int x = 1; // indent some pixels
-                    int y = 1; // center vertically
+                    int x = 1;
+                    int y = 1;
                     event.gc.drawText(text, x, y);
                     field.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
                 } else field.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
@@ -100,7 +106,7 @@ public class SWTTable {
         }
     }
 
-    public static void initFilters(Group group, Table table) {  // метод обработки нажатия кнопки поиска
+    public void initFilters(Group group, Table table) {  // метод обработки нажатия кнопки поиска
         Button find = new Button(group, SWT.NONE);
         find.setText("поиск");
         find.setBounds(10, 20, 110, 30);
@@ -109,7 +115,7 @@ public class SWTTable {
             public void widgetSelected(SelectionEvent arg0) {
                 String query = GetCustomersQuery();
                 try {
-                    SetTableRows(table, GetAllParam(query));
+                    SetTableRows(table, dbManager.GetAllParam(query));
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (SQLException throwables) {
@@ -158,7 +164,7 @@ public class SWTTable {
         if (conditionRows > 1) {
             Combo attributeOperator = new Combo(rowGroup, SWT.DROP_DOWN);
             attributeOperator.setBounds(10, 20, 60, 20);
-            String[] itemsOperator1 = new String[]{"AND", "OR"};
+            String[] itemsOperator1 = new String[]{"AND", "OR",};
             attributeOperator.setItems(itemsOperator1);
             attributeOperator.select(0);
             conditionsOperators.put(conditionRows, attributeOperator);
@@ -203,11 +209,12 @@ public class SWTTable {
         resultGroup.setText("Результат");
         Table table = initTable(resultGroup);
 
+        SWTTable swtTable = new SWTTable();
         Group filtersGroup = new Group(shell, SWT.SHADOW_ETCHED_IN);
         filtersGroup.setLocation(1020, 0);
         filtersGroup.setSize(455, 730);
         filtersGroup.setText("Фильтры");
-        initFilters(filtersGroup, table);
+        swtTable.initFilters(filtersGroup, table);
         //       addConditionsFields(filtersGroup);
 
         shell.setSize(1500, 800);
