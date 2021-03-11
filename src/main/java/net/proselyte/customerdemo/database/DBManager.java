@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 
-public class DBManager implements DBManagerInterface {
+public class DBManager {
 
     DBConnection db;
 
