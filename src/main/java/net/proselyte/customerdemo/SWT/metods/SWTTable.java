@@ -8,6 +8,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowData;
@@ -15,6 +16,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.*;
 
 import javax.naming.directory.SearchResult;
+import java.io.InputStream;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class SWTTable {
     SWTTable(){
         this.dbManager = new DBManager();
     }
+
 
     public static int conditionRows;
     public static Map<Integer, Combo> conditionsAttributes = new HashMap<Integer, Combo>(); //массив атрибутов поиска имя-фамилия и т.д.
@@ -138,18 +141,19 @@ public class SWTTable {
     public static Table initTable(Group group) {    //метод инициализации таблицы вывода
         Table table = new Table(group, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         table.setHeaderVisible(true);
-        String[] titles = {"Номер", "Имя", "Фамилия", "Дата рождения", "Адрес", "Бюджет"};
+        String[] titles = {"Номер / Id", "Имя / First name", "Фамилия / Last name", "Дата рождения / Date of birth", "Адрес места жительства / Address", "Бюджет / Budget"};
 
         for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
             TableColumn column = new TableColumn(table, SWT.NULL);
             column.setText(titles[loopIndex]);
             column.setResizable(true);
-            column.setWidth(300);
+            column.setWidth(500);
 
         }
         for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
             table.getColumn(loopIndex).pack();
         }
+
         table.setBounds(10, 20, 980, 700);
         return table;
     }
@@ -181,6 +185,18 @@ public class SWTTable {
         attributeValue.setBounds(230, 20, 120, 23);
         conditionsValues.put(conditionRows, attributeValue);
 
+        Button add = new Button(rowGroup, SWT.NONE);
+        add.setText("+");
+        add.setBounds(360, 20, 25, 25);
+        add.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                addUnderConditionRow(group, conditionRows);
+            }
+        });
+
+
+
         Button remove = new Button(rowGroup, SWT.NONE);
         remove.setText("X");
         remove.setBounds(390, 20, 25, 25);
@@ -190,6 +206,51 @@ public class SWTTable {
                 removeConditionRow(group, conditionRows);
             }
         });
+    }
+
+    private static void addUnderConditionRow(Group group, int conditionRows1) {
+        conditionRows += 1;
+        Group rowGroup = new Group(group, SWT.SHADOW_ETCHED_IN);
+        rowGroup.setLocation(10, 60 + (conditionRows - 1) * 60);
+        rowGroup.setSize(430, 55);
+        rowGroup.setText("Условие: " + conditionRows);
+
+        if (conditionRows > 1) {
+            conditionRows1 += 1;
+
+            Combo attributeOperator = new Combo(rowGroup, SWT.DROP_DOWN);
+            attributeOperator.setBounds(10, 20, 60, 20);
+            String[] itemsOperator1 = new String[]{"IN", "NOT IN",};
+            attributeOperator.setItems(itemsOperator1);
+            attributeOperator.select(0);
+            conditionsOperators.put(conditionRows1, attributeOperator);
+
+            Combo attributeName = new Combo(rowGroup, SWT.DROP_DOWN);
+            attributeName.setBounds(100, 20, 120, 20);
+            String[] items1 = new String[]{"first_name", "last_name", "date_of_birth", "budget"};
+            attributeName.setItems(items1);
+            SetPlaceholder(attributeName, "Выберете поле...");
+            conditionsAttributes.put(conditionRows1, attributeName);
+
+            Text attributeValue = new Text(rowGroup, SWT.BORDER);
+            attributeValue.setBounds(230, 20, 120, 23);
+            conditionsValues.put(conditionRows1, attributeValue);
+
+            Button remove = new Button(rowGroup, SWT.NONE);
+            remove.setText("X");
+            remove.setBounds(390, 20, 25, 25);
+            conditionsValues.put(conditionRows1, attributeValue);
+            int finalConditionRows = conditionRows1;
+            remove.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent arg0) {
+                    removeConditionRow(group, finalConditionRows);
+                }
+            });
+
+        }
+
+
     }
 
     public static void removeConditionRow(Group group, Integer conditionRows) { // тут будет метод удаления полей и условия поиска
@@ -217,13 +278,17 @@ public class SWTTable {
         swtTable.initFilters(filtersGroup, table);
         //       addConditionsFields(filtersGroup);
 
+
         shell.setSize(1500, 800);
         shell.open();
+
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch())
                 display.sleep();
         }
         display.dispose();
+
     }
+
 
 }
