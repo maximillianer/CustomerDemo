@@ -208,7 +208,7 @@ public class SWTTable {
         });
     }
 
-    private static void addUnderConditionRow(Group group, int conditionRows1) {
+    private static void addUnderConditionRow(Group group, int conditionRows1) { // добавление подусловия
         conditionRows += 1;
         Group rowGroup = new Group(group, SWT.SHADOW_ETCHED_IN);
         rowGroup.setLocation(10, 60 + (conditionRows - 1) * 60);
