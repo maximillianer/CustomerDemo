@@ -32,7 +32,6 @@ public class QueryBielder {
             String attributeValue = valueField.getText();
 
             String attributeOperator = "";
-            String attributeOperator1 = "";
             if (i > 1) {
                 Combo operator = conditionsOperators.get(i);
                 Combo operator1 = conditionsOperators1.get(i);
@@ -40,7 +39,6 @@ public class QueryBielder {
                 Integer operatorIndex1 = operator1.getSelectionIndex();
                 if (operatorIndex >= 0 || operatorIndex1 >= 0) {
                     attributeOperator = operator.getItem(operatorIndex);
-                    attributeOperator1 = operator1.getItem(operatorIndex1);
                 }
             }
 
@@ -48,10 +46,10 @@ public class QueryBielder {
                 continue;
             }
 
-            if (attributeName.equals("date_of_birth")  || attributeName.equals("budget") ) {
+            if (attributeName.equals("date_of_birth") || attributeName.equals("budget")) {
                 where = where + " " + attributeOperator + " (" + attributeName + " = '" + attributeValue + "')";                // вариант поиска по дате и бюджету
             } else {
-                where = where + " " + attributeOperator + " ( "+ lower + " (" + attributeName + ") " + like + " '" + attributeValue + "%')";   // вариант поиска по части текста
+                where = where + " " + attributeOperator + " ( LOWER (" + attributeName + ") LIKE '" + attributeValue + "%')";   // вариант поиска по части текста
             }
         }
 
