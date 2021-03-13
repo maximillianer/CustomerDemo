@@ -2,6 +2,7 @@ package net.proselyte.customerdemo.SWT.metods;
 
 import lombok.ToString;
 import net.proselyte.customerdemo.database.DBManager;
+import net.proselyte.customerdemo.database.QueryBielder;
 import net.proselyte.customerdemo.model.Customer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -29,57 +30,59 @@ public class SWTTable {
 
     DBManager dbManager;
 
-    SWTTable(){
+    public SWTTable() {
         this.dbManager = new DBManager();
     }
 
 
-    public static int conditionRows;
-    public static Map<Integer, Combo> conditionsAttributes = new HashMap<Integer, Combo>(); //массив атрибутов поиска имя-фамилия и т.д.
-    public static Map<Integer, Text> conditionsValues = new HashMap<Integer, Text>();      //массив значений ввода в строке поиска
-    public static Map<Integer, Combo> conditionsOperators = new HashMap<Integer, Combo>();  //массив оператовров поиска и-или
-
-    public static String GetCustomersQuery() {                                 //метод постороение запроса в базу данных в соответствии с значениями поиска
-        String where = "";
-        for (int i = 1; i <= conditionRows; i++) {
-            Combo attributeField = conditionsAttributes.get(i);
-            String attributeName = "";
-            Integer attributeIndex = attributeField.getSelectionIndex();
-            if (attributeIndex >= 0) {
-                attributeName = attributeField.getItem(attributeIndex);
-            }
-
-            Text valueField = conditionsValues.get(i);
-            String attributeValue = valueField.getText();
-
-            String attributeOperator = "";
-            if (i > 1) {
-                Combo operator = conditionsOperators.get(i);
-                Integer operatorIndex = operator.getSelectionIndex();
-                if (operatorIndex >= 0) {
-                    attributeOperator = operator.getItem(operatorIndex);
-                }
-            }
-
-            if (attributeName.length() == 0 || attributeValue.length() == 0) {
-                continue;
-            }
-
-            if (attributeName.equals("date_of_birth")  || attributeName.equals("budget") ) {
-                where = where + " " + attributeOperator + " (" + attributeName + " = '" + attributeValue + "')";                // вариант поиска по дате и бюджету
-            } else {
-                where = where + " " + attributeOperator + " ( LOWER (" + attributeName + ") LIKE '" + attributeValue + "%')";   // вариант поиска по части текста
-            }
-        }
-
-        String query = "SELECT * FROM customers";
-        if (where.length() > 0) {
-            query = query + " WHERE " + where;
-        }
-        System.out.println(query);
-
-        return query; // строка запроса SQL
-    }
+//    public static int conditionRows;
+//    public static int conditionRows1;
+//    public static Map<Integer, Combo> conditionsAttributes = new HashMap<Integer, Combo>(); //массив атрибутов поиска имя-фамилия и т.д.
+//    public static Map<Integer, Text> conditionsValues = new HashMap<Integer, Text>();      //массив значений ввода в строке поиска
+//    public static Map<Integer, Combo> conditionsOperators = new HashMap<Integer, Combo>();  //массив оператовров поиска и-или
+//    public static Map<Integer, Combo> conditionsOperators1 = new HashMap<>();  //массив операторов поиска (IN, NOT IN) первой группы внутри скобок
+//
+    //   public static String GetCustomersQuery() {                                 //метод постороение запроса в базу данных в соответствии с значениями поиска
+//       String where = "";
+//       for (int i = 1; i <= conditionRows; i++) {
+//           Combo attributeField = conditionsAttributes.get(i);
+//           String attributeName = "";
+//           Integer attributeIndex = attributeField.getSelectionIndex();
+//           if (attributeIndex >= 0) {
+//               attributeName = attributeField.getItem(attributeIndex);
+//           }
+//
+//           Text valueField = conditionsValues.get(i);
+//           String attributeValue = valueField.getText();
+//
+//           String attributeOperator = "";
+//           if (i > 1) {
+//               Combo operator = conditionsOperators.get(i);
+//               Integer operatorIndex = operator.getSelectionIndex();
+//               if (operatorIndex >= 0) {
+//                   attributeOperator = operator.getItem(operatorIndex);
+//               }
+//           }
+//
+//           if (attributeName.length() == 0 || attributeValue.length() == 0) {
+//               continue;
+//           }
+//
+//           if (attributeName.equals("date_of_birth")  || attributeName.equals("budget") ) {
+//               where = where + " " + attributeOperator + " (" + attributeName + " = '" + attributeValue + "')";                // вариант поиска по дате и бюджету
+//           } else {
+//               where = where + " " + attributeOperator + " ( LOWER (" + attributeName + ") LIKE '" + attributeValue + "%')";   // вариант поиска по части текста
+//           }
+//       }
+//
+//       String query = "SELECT * FROM customers";
+//       if (where.length() > 0) {
+//           query = query + " WHERE " + where;
+//       }
+//       System.out.println(query);
+//
+//       return query; // строка запроса SQL
+//    }
 
     public static void SetPlaceholder(Combo field, String text) { // метод для подстановки текста по умолчанию (placeholder)
         field.addPaintListener(new PaintListener() {
@@ -116,7 +119,8 @@ public class SWTTable {
         find.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent arg0) {
-                String query = GetCustomersQuery();
+                find.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GREEN));
+                String query = QueryBielder.GetCustomersQuery();
                 try {
                     SetTableRows(table, dbManager.GetAllParam(query));
                 } catch (ClassNotFoundException e) {
@@ -129,16 +133,17 @@ public class SWTTable {
 
         Button add = new Button(group, SWT.NONE);   //кнопка добавления полей и условия поиска
         add.setText("добавить условие");
-        add.setBounds(300, 20, 140, 30);
+        add.setBounds(500, 20, 140, 30);
         add.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent arg0) {
+                find.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
                 addConditionRow(group);
             }
         });
     }
 
-    public static Table initTable(Group group) {    //метод инициализации таблицы вывода
+    public static Table initTable(Group group) {     //метод инициализации таблицы вывода
         Table table = new Table(group, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         table.setHeaderVisible(true);
         String[] titles = {"Номер / Id", "Имя / First name", "Фамилия / Last name", "Дата рождения / Date of birth", "Адрес места жительства / Address", "Бюджет / Budget"};
@@ -159,87 +164,178 @@ public class SWTTable {
     }
 
     public static void addConditionRow(Group group) { // метод добавления полей и условия поиска
-        conditionRows += 1;
+        QueryBielder.conditionRows += 1;
         Group rowGroup = new Group(group, SWT.SHADOW_ETCHED_IN);
-        rowGroup.setLocation(10, 60 + (conditionRows - 1) * 60);
-        rowGroup.setSize(430, 55);
-        rowGroup.setText("Условие: " + conditionRows);
+        rowGroup.setLocation(10, 60 + (QueryBielder.conditionRows - 1) * 60);
+        rowGroup.setSize(630, 55);
+        rowGroup.setText("Условие: " + QueryBielder.conditionRows);
 
-        if (conditionRows > 1) {
+        if (QueryBielder.conditionRows > 1) {
             Combo attributeOperator = new Combo(rowGroup, SWT.DROP_DOWN);
             attributeOperator.setBounds(10, 20, 60, 20);
             String[] itemsOperator1 = new String[]{"AND", "OR",};
             attributeOperator.setItems(itemsOperator1);
             attributeOperator.select(0);
-            conditionsOperators.put(conditionRows, attributeOperator);
+            QueryBielder.conditionsOperators.put(QueryBielder.conditionRows, attributeOperator);
+
+            Button add2 = new Button(group, SWT.NONE);   //кнопка добавления промежуточных полей и условия поиска
+            add2.setText("добавить промежуточное условие");
+            add2.setBounds(300, 20, 190, 30);
+            add2.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent arg0) {
+                    addConditionRow(group);
+                    attributeOperator.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GREEN));
+                }
+            });
         }
 
         Combo attributeName = new Combo(rowGroup, SWT.DROP_DOWN);
-        attributeName.setBounds(100, 20, 120, 20);
+        attributeName.setBounds(80, 20, 100, 20);
         String[] items1 = new String[]{"first_name", "last_name", "date_of_birth", "budget"};
         attributeName.setItems(items1);
-        SetPlaceholder(attributeName, "Выберете поле...");
-        conditionsAttributes.put(conditionRows, attributeName);
+        SetPlaceholder(attributeName, "поиск по");
+        QueryBielder.conditionsAttributes.put(QueryBielder.conditionRows, attributeName);
 
-        Text attributeValue = new Text(rowGroup, SWT.BORDER);
-        attributeValue.setBounds(230, 20, 120, 23);
-        conditionsValues.put(conditionRows, attributeValue);
 
         Button add = new Button(rowGroup, SWT.NONE);
-        add.setText("+");
-        add.setBounds(360, 20, 25, 25);
+        add.setText("OK");
+        add.setBounds(190, 20, 25, 25);
         add.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent arg0) {
-                addUnderConditionRow(group, conditionRows);
+                String it = attributeName.getText();
+                if (it.equals("first_name") || it.equals("last_name")) {
+                    Text attributeValue = new Text(rowGroup, SWT.BORDER);
+                    attributeValue.setBounds(230, 20, 120, 23);
+                    QueryBielder.conditionsValues.put(QueryBielder.conditionRows, attributeValue);
+                } else if (it.equals("date_of_birth")) {
+                    Combo yearValue = new Combo(rowGroup, SWT.DROP_DOWN);
+                    yearValue.setBounds(230, 20, 45, 23);
+                    String[] itemsYears = new String[]{"1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995",
+                            "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008",
+                            "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"};
+                    yearValue.setItems(itemsYears);
+                    SetPlaceholder(yearValue, "Год");
+
+                    Combo monthValue = new Combo(rowGroup, SWT.DROP_DOWN);
+                    monthValue.setBounds(280, 20, 40, 23);
+                    String[] itemsMonths = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+                    monthValue.setItems(itemsMonths);
+                    SetPlaceholder(monthValue, "м");
+
+                    Combo daysValue = new Combo(rowGroup, SWT.DROP_DOWN);
+                    daysValue.setBounds(325, 20, 40, 23);
+                    String[] itemsDays = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
+                            "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "24", "25", "26", "27", "28", "29", "30", "31"};
+                    daysValue.setItems(itemsDays);
+                    SetPlaceholder(daysValue, "ч");
+
+                    String searchOfDateOfBirthbefore = yearValue + "-" + monthValue + "-" + daysValue;
+
+                    Button period = new Button(rowGroup, SWT.NONE);
+                    period.setText("в период по");
+                    period.setBounds(370, 20, 75, 25);
+                    period.addSelectionListener(new SelectionAdapter() {
+                        @Override
+                        public void widgetSelected(SelectionEvent arg0) {
+                            Combo yearValue = new Combo(rowGroup, SWT.DROP_DOWN);
+                            yearValue.setBounds(450, 20, 45, 23);
+                            String[] itemsYears1 = new String[]{"1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995",
+                                    "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008",
+                                    "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"};
+                            yearValue.setItems(itemsYears1);
+                            SetPlaceholder(yearValue, "Год");
+
+                            Combo monthValue = new Combo(rowGroup, SWT.DROP_DOWN);
+                            monthValue.setBounds(505, 20, 40, 23);
+                            String[] itemsMonths1 = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+                            monthValue.setItems(itemsMonths1);
+                            SetPlaceholder(monthValue, "м");
+
+                            Combo daysValue = new Combo(rowGroup, SWT.DROP_DOWN);
+                            daysValue.setBounds(550, 20, 40, 23);
+                            String[] itemsDays1 = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
+                                    "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "24", "25", "26", "27", "28", "29", "30", "31"};
+                            daysValue.setItems(itemsDays1);
+                            SetPlaceholder(daysValue, "ч");
+
+                            String searchOfDateOfBirthAfter = yearValue + "-" + monthValue + "-" + daysValue;
+                        }
+                    });
+
+                    // QueryBielder.conditionsValues.put(QueryBielder.conditionRows, searchOfDateOfBirth);
+
+                } else if (it.equals("budget")) {
+                    Text attributeValuebudget = new Text(rowGroup, SWT.BORDER);
+                    attributeValuebudget.setBounds(310, 20, 120, 23);
+                    QueryBielder.conditionsValues.put(QueryBielder.conditionRows, attributeValuebudget);
+
+                    Combo attributeOperatorMoreAndLess = new Combo(rowGroup, SWT.DROP_DOWN);
+                    attributeOperatorMoreAndLess.setBounds(230, 20, 60, 20);
+                    String[] itemsOperator1 = new String[]{"<=", ">=",};
+                    attributeOperatorMoreAndLess.setItems(itemsOperator1);
+                    attributeOperatorMoreAndLess.select(0);
+                    QueryBielder.conditionsOperators.put(QueryBielder.conditionRows, attributeOperatorMoreAndLess);
+
+                }
             }
         });
 
-
-
         Button remove = new Button(rowGroup, SWT.NONE);
         remove.setText("X");
-        remove.setBounds(390, 20, 25, 25);
+        remove.setBounds(595, 20, 25, 25);
         remove.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent arg0) {
-                removeConditionRow(group, conditionRows);
+
             }
         });
     }
 
     private static void addUnderConditionRow(Group group, int conditionRows1) { // добавление подусловия
-        conditionRows += 1;
+        conditionRows1 += 1;
         Group rowGroup = new Group(group, SWT.SHADOW_ETCHED_IN);
-        rowGroup.setLocation(10, 60 + (conditionRows - 1) * 60);
+        rowGroup.setLocation(10, 60 + (conditionRows1 - 1) * 60);
         rowGroup.setSize(430, 55);
-        rowGroup.setText("Условие: " + conditionRows);
+        rowGroup.setText("Условие: " + conditionRows1);
 
-        if (conditionRows > 1) {
+        if (conditionRows1 > 1) {
             conditionRows1 += 1;
 
             Combo attributeOperator = new Combo(rowGroup, SWT.DROP_DOWN);
             attributeOperator.setBounds(10, 20, 60, 20);
-            String[] itemsOperator1 = new String[]{"IN", "NOT IN",};
+            String[] itemsOperator1 = new String[]{"AND", "OR",};
             attributeOperator.setItems(itemsOperator1);
             attributeOperator.select(0);
-            conditionsOperators.put(conditionRows1, attributeOperator);
+            QueryBielder.conditionsOperators.put(conditionRows1, attributeOperator);
 
             Combo attributeName = new Combo(rowGroup, SWT.DROP_DOWN);
             attributeName.setBounds(100, 20, 120, 20);
             String[] items1 = new String[]{"first_name", "last_name", "date_of_birth", "budget"};
             attributeName.setItems(items1);
             SetPlaceholder(attributeName, "Выберете поле...");
-            conditionsAttributes.put(conditionRows1, attributeName);
+            QueryBielder.conditionsAttributes.put(conditionRows1, attributeName);
 
             Text attributeValue = new Text(rowGroup, SWT.BORDER);
             attributeValue.setBounds(230, 20, 120, 23);
-            conditionsValues.put(conditionRows1, attributeValue);
+            QueryBielder.conditionsValues.put(conditionRows1, attributeValue);
+
+            Button add = new Button(rowGroup, SWT.NONE);
+            add.setText("+");
+            add.setBounds(360, 20, 25, 25);
+            int finalConditionRows1 = conditionRows1;
+            add.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent arg0) {
+                    addUnderConditionRow(group, finalConditionRows1 - 1);
+                }
+            });
 
             Button remove = new Button(rowGroup, SWT.NONE);
             remove.setText("X");
             remove.setBounds(390, 20, 25, 25);
-            conditionsValues.put(conditionRows1, attributeValue);
+            QueryBielder.conditionsValues.put(conditionRows1, attributeValue);
             int finalConditionRows = conditionRows1;
             remove.addSelectionListener(new SelectionAdapter() {
                 @Override
@@ -253,7 +349,7 @@ public class SWTTable {
 
     }
 
-    public static void removeConditionRow(Group group, Integer conditionRows) { // тут будет метод удаления полей и условия поиска
+    public static void removeConditionRow(Group group, Integer finalConditionRows) { // тут будет метод удаления полей и условия поиска
 
     }
 
@@ -273,13 +369,13 @@ public class SWTTable {
         SWTTable swtTable = new SWTTable();
         Group filtersGroup = new Group(shell, SWT.SHADOW_ETCHED_IN);
         filtersGroup.setLocation(1020, 0);
-        filtersGroup.setSize(455, 730);
+        filtersGroup.setSize(655, 730);
         filtersGroup.setText("Фильтры");
         swtTable.initFilters(filtersGroup, table);
         //       addConditionsFields(filtersGroup);
 
 
-        shell.setSize(1500, 800);
+        shell.setSize(1700, 800);
         shell.open();
 
         while (!shell.isDisposed()) {
