@@ -12,19 +12,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FiltersForm {
-    int conditionGroupCount = 0;
-    public static Map<Integer, Group> conditionGroup = new HashMap<>();
+    int conditionGroupCount = 0; // каунтер количетсва групп
+    public static Map<Integer, Group> conditionGroup = new HashMap<>(); // группы поиска
 
-    public static Map<Integer, Integer> subConditionGroupCount = new HashMap<>();
-    public static HashMap<Integer, HashMap<Integer, Group>> subConditionGroup = new HashMap<Integer, HashMap<Integer, Group>>();
+    public static Map<Integer, Integer> subConditionGroupCount = new HashMap<>(); // количество подгрупп поиска
+    public static HashMap<Integer, HashMap<Integer, Group>> subConditionGroup = new HashMap<Integer, HashMap<Integer, Group>>();//значения в догруппах
 
 
     public void addConditionGroup(Group containerGroup) { // добавить поле условия
-        conditionGroupCount++;
+        conditionGroupCount++; // увеличивать каунтер если добавлено новое условие поиска
         int rowID = conditionGroupCount;
         int orderId = conditionGroup.size();
         Group rowGroup = new Group(containerGroup, SWT.SHADOW_ETCHED_IN);
-        rowGroup.setData("ID", rowID);
+        rowGroup.setData("ID", rowID); //установить ключ - значение для группы поиска
         rowGroup.setLocation(10, 60 + orderId * 60);
         rowGroup.setSize(630, 55);
         rowGroup.setText("Условие: " + rowID);
@@ -38,12 +38,12 @@ public class FiltersForm {
         initButtonRemove(containerGroup, rowGroup, rowID);
     }
 
-    public void removeConditionGroup(Group group, int rowID) {
+    public void removeConditionGroup(Group group, int rowID) { // удалить группу поиска
         conditionGroup.remove(rowID);
         removeConditionGroupItemById(group, rowID);
     }
 
-    public void removeConditionGroupItemById(Group group, int rowID) {
+    public void removeConditionGroupItemById(Group group, int rowID) { // удалить подгруппу
         for (Control ctrl : group.getChildren()) {
             if (ctrl instanceof Group) {
                 int id = (int) ctrl.getData("ID");
@@ -55,7 +55,7 @@ public class FiltersForm {
         }
     }
 
-    public void initCondition(Group rowGroup, int orderId) {
+    public void initCondition(Group rowGroup, int orderId) { // подставление оператора поиска в группу поиска игнорируя первую группу
         if (orderId > 0) {
             Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
             input.setBounds(10, 20, 60, 20);
@@ -67,7 +67,7 @@ public class FiltersForm {
     }
 
 
-    public void initAttribute(Group rowGroup) {
+    public void initAttribute(Group rowGroup) { // подставление значения
         Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
         input.setBounds(80, 20, 120, 20);
         String[] values = new String[]{"first_name", "last_name", "date_of_birth", "budget"};
@@ -75,7 +75,7 @@ public class FiltersForm {
         input.setData("ID", "attribute");
     }
 
-    public void initOperator(Group rowGroup) {
+    public void initOperator(Group rowGroup) { // подставление оператора
         Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
         input.setBounds(210, 20, 60, 20);
         String[] values = new String[]{">=", "<=", "=", "!=", "between"};
@@ -83,13 +83,13 @@ public class FiltersForm {
         input.setData("ID", "operator");
     }
 
-    public void initValue(Group rowGroup) {
+    public void initValue(Group rowGroup) { // подставление поле поиска по значению
         Text input = new Text(rowGroup, SWT.BORDER);
         input.setBounds(280, 20, 120, 23);
         input.setData("ID", "value");
     }
 
-    public Button initButtonSub(Group containerGroup, Group rowGroup, int rowID, int orderID) {
+    public Button initButtonSub(Group containerGroup, Group rowGroup, int rowID, int orderID) { // подставление кнопки добавления подусловия
         Button btn = new Button(rowGroup, SWT.NONE);
         btn.setText("+");
         btn.setBounds(570, 20, 25, 25);
@@ -103,7 +103,7 @@ public class FiltersForm {
         return btn;
     }
 
-    public Button initButtonRemove(Group containerGroup, Group rowGroup, int rowID) {
+    public Button initButtonRemove(Group containerGroup, Group rowGroup, int rowID) { // подставление кнопки удаления группы поиска
         Button btn = new Button(rowGroup, SWT.NONE);
         btn.setText("X");
         btn.setBounds(595, 20, 25, 25);
@@ -117,7 +117,7 @@ public class FiltersForm {
         return btn;
     }
 
-    public void addSubConditionGroup(Group containerGroup, Group rowGroup, int rowID, int orderID) { // добавить поле условия
+    public void addSubConditionGroup(Group containerGroup, Group rowGroup, int rowID, int orderID) { // добавить поле подусловия поиска
         int subID = 0;
         if (subConditionGroupCount.containsKey(rowID)) {
             subID = subConditionGroupCount.get(rowID);
@@ -150,7 +150,7 @@ public class FiltersForm {
         initButtonSubRemove(containerGroup, rowGroup, rowID, subGroup, subID);
     }
 
-    public Button initButtonSubRemove(Group containerGroup, Group rowGroup, int rowID, Group subGroup, int subID) {
+    public Button initButtonSubRemove(Group containerGroup, Group rowGroup, int rowID, Group subGroup, int subID) { // добавление кнопки удаления подгруппы поиска
         Button btn = new Button(subGroup, SWT.NONE);
         btn.setText("X");
         btn.setBounds(505, 20, 25, 25);
@@ -165,12 +165,12 @@ public class FiltersForm {
     }
 
 
-    public void removeSubConditionGroup(Group group, int rowID, int subID) {
+    public void removeSubConditionGroup(Group group, int rowID, int subID) { // метод системного удаления подгруппы поиска
         subConditionGroup.get(rowID).remove(subID);
         removeSubConditionGroupItemById(group, rowID, subID);
     }
 
-    public void removeSubConditionGroupItemById(Group group, int rowID, int subID) {
+    public void removeSubConditionGroupItemById(Group group, int rowID, int subID) { // метод визуального удаления подгруппы поиска
         for (Control ctrl : group.getChildren()) {
             if (ctrl instanceof Group) {
                 String id = (String) ctrl.getData("ID");
@@ -183,7 +183,7 @@ public class FiltersForm {
     }
 
 
-    public void render(Group containerGroup) {
+    public void render(Group containerGroup) { // метод перерисовки клонтента при добавлении и удалении групп поиска
         int rowY = 0;
         for (Map.Entry<Integer, Group> entry : conditionGroup.entrySet()) {
             Group group = entry.getValue();
@@ -213,7 +213,7 @@ public class FiltersForm {
         }
     }
 
-    public String getSql() {
+    public String getSql() { // полуение строки поиска
         String where = "";
         for (Map.Entry<Integer, Group> entry : conditionGroup.entrySet()) {
             Integer rowId = entry.getKey();
@@ -241,7 +241,7 @@ public class FiltersForm {
     }
 
 
-    public Map<String, String> getCondition(Group group) {
+    public Map<String, String> getCondition(Group group) { // получение условия
         Map<String, String> condition = new HashMap<>();
         for (Control ctrl : group.getChildren()) {
             String key = "";
@@ -266,7 +266,7 @@ public class FiltersForm {
         return condition;
     }
 
-    public String prepareCondition(Map.Entry<Integer, Group> entry, String subQuery) {
+    public String prepareCondition(Map.Entry<Integer, Group> entry, String subQuery) { // построение строки поиска
         Group group = entry.getValue();
         Map<String, String> condition = getCondition(group);
         String sql = sqlBuilder(condition);
@@ -285,7 +285,7 @@ public class FiltersForm {
          return  " (" + sql + ") ";
     }
 
-    public String sqlBuilder(Map<String, String> map) {
+    public String sqlBuilder(Map<String, String> map) { // получение значений для построения строки поиска
         String attribute = map.get("attribute");
         String operator = map.get("operator");
         String value = map.get("value");
