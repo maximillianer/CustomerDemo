@@ -78,7 +78,7 @@ public class FiltersForm {
     public void initOperator(Group rowGroup) { // подставление оператора
         Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
         input.setBounds(210, 20, 60, 20);
-        String[] values = new String[]{">=", "<=", "=", "!=", "between"};
+        String[] values = new String[]{">=", "<=", "=", "!=", "LIKE", "between"};
         input.setItems(values);
         input.setData("ID", "operator");
     }

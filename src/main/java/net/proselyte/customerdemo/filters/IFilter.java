@@ -9,6 +9,5 @@ public interface IFilter {
      public String getValue();
      public String getOperator();
      public String getCondition();
-
      public String[] getOperatorsArray();
 }

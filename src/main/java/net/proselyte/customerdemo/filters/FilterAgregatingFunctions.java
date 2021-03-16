@@ -1,5 +1,7 @@
 package net.proselyte.customerdemo.filters;
 
+import net.proselyte.customerdemo.SWT.metods.SWTTable;
+
 public class FilterAgregatingFunctions implements IFilter{
 
     @Override
@@ -27,7 +29,7 @@ public class FilterAgregatingFunctions implements IFilter{
         return new String[0];
     }
 
-    public int CountCol (int Id){
+    public int CountCol (int q){
         int CountCustomers = 0;
         return CountCustomers;
     }
