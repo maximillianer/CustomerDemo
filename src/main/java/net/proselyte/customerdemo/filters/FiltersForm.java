@@ -11,13 +11,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static net.proselyte.customerdemo.database.DBArrays.*;
+
+/**
+ * Класс динамического построения запросов поиска в окне
+ * @autor Eliseev Maxim
+ * @version 1.0
+ */
+
 public class FiltersForm {
     int conditionGroupCount = 0; // каунтер количетсва групп
     public static Map<Integer, Group> conditionGroup = new HashMap<>(); // группы поиска
-
     public static Map<Integer, Integer> subConditionGroupCount = new HashMap<>(); // количество подгрупп поиска
     public static HashMap<Integer, HashMap<Integer, Group>> subConditionGroup = new HashMap<Integer, HashMap<Integer, Group>>();//значения в догруппах
-
 
     public void addConditionGroup(Group containerGroup) { // добавить поле условия
         conditionGroupCount++; // увеличивать каунтер если добавлено новое условие поиска
@@ -25,7 +31,7 @@ public class FiltersForm {
         int orderId = conditionGroup.size();
         Group rowGroup = new Group(containerGroup, SWT.SHADOW_ETCHED_IN);
         rowGroup.setData("ID", rowID); //установить ключ - значение для группы поиска
-        rowGroup.setLocation(10, 60 + orderId * 60);
+        rowGroup.setLocation(10, 60 + orderId * 60); // спозиционировать группу в окне
         rowGroup.setSize(630, 55);
         rowGroup.setText("Условие: " + rowID);
         conditionGroup.put(rowID, rowGroup);
@@ -59,8 +65,7 @@ public class FiltersForm {
         if (orderId > 0) {
             Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
             input.setBounds(10, 20, 60, 20);
-            String[] itemsOperator1 = new String[]{"AND", "OR",};
-            input.setItems(itemsOperator1);
+            input.setItems(SQLOperators);
             input.select(0);
             input.setData("ID", "condition");
         }
@@ -70,16 +75,14 @@ public class FiltersForm {
     public void initAttribute(Group rowGroup) { // подставление значения
         Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
         input.setBounds(80, 20, 120, 20);
-        String[] values = new String[]{"first_name", "last_name", "date_of_birth", "budget"};
-        input.setItems(values);
+        input.setItems(SQLValues);
         input.setData("ID", "attribute");
     }
 
-    public void initOperator(Group rowGroup) { // подставление оператора
+    public void initOperator(Group rowGroup) { // подставление оператора из массива значений в DBArrays
         Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
         input.setBounds(210, 20, 60, 20);
-        String[] values = new String[]{">=", "<=", "=", "!=", "LIKE", "between"};
-        input.setItems(values);
+        input.setItems(SQLMathematicOperators);
         input.setData("ID", "operator");
     }
 
@@ -213,6 +216,9 @@ public class FiltersForm {
         }
     }
 
+    //вынести в отдельный класс и отфильтровать через новый фильтр который будет подставлять для текстовых полей LOWER и LIKE
+
+
     public String getSql() { // полуение строки поиска
         String where = "";
         for (Map.Entry<Integer, Group> entry : conditionGroup.entrySet()) {
@@ -229,6 +235,7 @@ public class FiltersForm {
 
 
             where += prepareCondition(entry, sqlGroup);
+            System.out.println("получаемое условие из окна поиска: " + where);
         }
 
         String query = "SELECT * FROM customers";
