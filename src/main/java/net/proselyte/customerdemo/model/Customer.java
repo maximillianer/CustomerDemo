@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
- * simple JavaBean domain object that respensent Customer
+ * простой объект JavaBean domain отвечающий за клиента
  */
 
 @Entity
