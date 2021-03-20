@@ -3,7 +3,7 @@ package net.proselyte.customerdemo.database;
 public class SqlConstants {
 
     //основной SQL  запрос на всех работников
-    final static String ALLCUSTOMERS = "SELECT * FROM customers";
+    public static String ALLCustomers = "SELECT * FROM customers";
 
     //операторы
     final static String AND = "AND";
