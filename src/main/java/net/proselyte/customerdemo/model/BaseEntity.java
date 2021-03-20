@@ -7,8 +7,9 @@ import lombok.ToString;
 import javax.persistence.*;
 
 /**
- * Base class class with property ID
+ * Базовый класс - class with property ID
  */
+
 @MappedSuperclass
 @Entity
 @Table(name = "customers")
