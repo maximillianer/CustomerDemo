@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.proselyte.customerdemo.database.DBArrays.*;
+import static net.proselyte.customerdemo.database.SqlConstants.ALLCustomers;
 
 /**
  * Класс динамического построения запросов поиска в окне
@@ -186,7 +187,7 @@ public class FiltersForm {
     }
 
 
-    public void render(Group containerGroup) { // метод перерисовки клонтента при добавлении и удалении групп поиска
+    public void render(Group containerGroup) { // метод перерисовки контента при добавлении и удалении групп поиска
         int rowY = 0;
         for (Map.Entry<Integer, Group> entry : conditionGroup.entrySet()) {
             Group group = entry.getValue();
@@ -238,7 +239,7 @@ public class FiltersForm {
             System.out.println("получаемое условие из окна поиска: " + where);
         }
 
-        String query = "SELECT * FROM customers";
+        String query = ALLCustomers;
         if (where.length() > 0) {
             query = query + " WHERE " + where;
         }
