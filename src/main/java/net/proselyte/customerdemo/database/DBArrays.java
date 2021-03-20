@@ -11,7 +11,7 @@ public class DBArrays {
     };
 
     public static String[] SQLMathematicOperators = new String[]{
-            ">", "<", ">=", "<=", "=", "!=", "LIKE", "BETWEEN"
+            ">", "<", ">=", "<=", "=", "!=", "LIKE"
     };
 
     public static String[] SQLValues = new String[]{
