@@ -33,7 +33,7 @@ public class DBArrays {
      * it is an array of titles for Table
      */
     public static String[] titles = new String[]{
-            "Номер / Id", "Имя / First name", "Фамилия / Last name", "Дата рождения / Date of birth", "Адрес места жительства / Address", "Бюджет / Budget"
+            "Id Customers", "First name Customers", "Last name Customers", "Date of birth Customers", "Address residence Customers", "Budget Customers"
     };
 
     /**
