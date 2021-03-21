@@ -4,6 +4,7 @@ import lombok.ToString;
 import net.proselyte.customerdemo.database.DBManager;
 import net.proselyte.customerdemo.database.QueryBuilder;
 import net.proselyte.customerdemo.database.QueryBuilder;
+import net.proselyte.customerdemo.filters.FilterText;
 import net.proselyte.customerdemo.filters.FiltersForm;
 import net.proselyte.customerdemo.model.Customer;
 import org.eclipse.swt.SWT;
@@ -74,7 +75,7 @@ public class SWTTable {
             @Override
             public void widgetSelected(SelectionEvent arg0) {
                 find.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GREEN));
-                String query = filters.getSql();
+                String query = FilterText.getSql();
                 try {
                     SetTableRows(table, dbManager.GetAllParam(query));
                 } catch (ClassNotFoundException e) {
