@@ -1,9 +1,14 @@
 package net.proselyte.customerdemo.database;
 
+/**
+ * This class encapsulates a database query
+ * @author Maxim Eliseev
+ * @version 1.0
+ */
 public class SqlConstants {
 
-    //основной SQL  запрос на всех работников
-    public static String ALLCustomers = "SELECT * FROM customers";
+    /** field SQL inquiry query to find all customers*/
+    public static String ALLCustomers = "SELECT * FROM customers"; //основной SQL  запрос на всех работников
 
     //операторы
     final static String AND = "AND";
