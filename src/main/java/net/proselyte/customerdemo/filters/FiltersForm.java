@@ -1,23 +1,20 @@
 package net.proselyte.customerdemo.filters;
 
-import net.proselyte.customerdemo.database.QueryBuilder;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static net.proselyte.customerdemo.database.DBArrays.*;
-import static net.proselyte.customerdemo.database.SqlConstants.ALLCustomers;
 
 /**
  * Класс динамического построения запросов поиска в окне
- * @autor Eliseev Maxim
+ *
  * @version 1.0
+ * @autor Eliseev Maxim
  */
 
 public class FiltersForm {
@@ -147,7 +144,7 @@ public class FiltersForm {
         }
         subConditionGroupCount.put(rowID, subID);
 
-        initCondition(subGroup, orderId+1);
+        initCondition(subGroup, orderId + 1);
         initAttribute(subGroup);
         initOperator(subGroup);
         initValue(subGroup);
@@ -215,97 +212,5 @@ public class FiltersForm {
             group.setLocation(10, rowY);
             rowY += height - 55;
         }
-    }
-
-    //вынести в отдельный класс и отфильтровать через новый фильтр который будет подставлять для текстовых полей LOWER и LIKE
-
-
-    public String getSql() { // полуение строки поиска
-        String where = "";
-        for (Map.Entry<Integer, Group> entry : conditionGroup.entrySet()) {
-            Integer rowId = entry.getKey();
-            HashMap<Integer, Group>  subConditions = subConditionGroup.get(rowId);
-
-            String sqlGroup  = "";
-            if(subConditions != null){
-                for (Map.Entry<Integer, Group> entry2 : subConditions.entrySet()) {
-                    String subSql = prepareCondition(entry2, "");
-                    sqlGroup  += subSql;
-                }
-            }
-
-
-            where += prepareCondition(entry, sqlGroup);
-            System.out.println("получаемое условие из окна поиска: " + where);
-        }
-
-        String query = ALLCustomers;
-        if (where.length() > 0) {
-            query = query + " WHERE " + where;
-        }
-      System.out.println(query);
-
-        return query; // строка запроса SQL
-    }
-
-
-    public Map<String, String> getCondition(Group group) { // получение условия
-        Map<String, String> condition = new HashMap<>();
-        for (Control ctrl : group.getChildren()) {
-            String key = "";
-            String value = "";
-            if (ctrl instanceof Combo) {
-                key = (String) ctrl.getData("ID");
-                Combo field = ((Combo) ctrl);
-                Integer selected = field.getSelectionIndex();
-                if (selected >= 0) {
-                    value = field.getItem(selected);
-                }
-            } else if (ctrl instanceof Text) {
-                key = (String) ctrl.getData("ID");
-                value = ((Text) ctrl).getText();
-            }
-
-            if (!key.isEmpty() && !value.isEmpty()) {
-                condition.put(key, value);
-            }
-        }
-
-        return condition;
-    }
-
-    public String prepareCondition(Map.Entry<Integer, Group> entry, String subQuery) { // построение строки поиска
-        Group group = entry.getValue();
-        Map<String, String> condition = getCondition(group);
-        String sql = sqlBuilder(condition);
-
-        if(!subQuery.isEmpty()){
-            sql =" ( "+sql+")"+subQuery;
-        }
-        if(sql.isEmpty()){
-            return  "";
-        }
-
-        String con2 = (String) condition.get("condition");
-        if(con2 != null){
-            return " "+con2 + " (" + sql + ") ";
-        }
-         return  " (" + sql + ") ";
-    }
-
-    public String sqlBuilder(Map<String, String> map) { // получение значений для построения строки поиска
-        String attribute = map.get("attribute");
-        String operator = map.get("operator");
-        String value = map.get("value");
-
-        if(attribute == null || operator == null || value == null){
-            return  "";
-        }
-
-        if(attribute.isEmpty() || operator.isEmpty() || value.isEmpty()){
-            return  "";
-        }
-
-        return attribute+" "+operator+" '"+value+"'";
     }
 }
