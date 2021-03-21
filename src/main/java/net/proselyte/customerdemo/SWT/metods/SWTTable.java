@@ -1,7 +1,6 @@
 package net.proselyte.customerdemo.SWT.metods;
 
 import net.proselyte.customerdemo.database.DBManager;
-import net.proselyte.customerdemo.database.QueryBuilder;
 import net.proselyte.customerdemo.filters.FilterText;
 import net.proselyte.customerdemo.filters.FiltersForm;
 import net.proselyte.customerdemo.model.Customer;
@@ -15,19 +14,31 @@ import org.eclipse.swt.widgets.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static net.proselyte.customerdemo.database.DBArrays.*;
+import static net.proselyte.customerdemo.database.DBArrays.titles;
 
-
+/**
+ * This is the class building the system window
+ * @author Maxim Eliseew
+ * @version 3.0
+ */
 public class SWTTable {
 
     DBManager dbManager;
 
+    /**
+     * Constructor SWTTable.class
+     */
     public SWTTable() {
         this.dbManager = new DBManager();
     }
 
     public static FiltersForm filters = new FiltersForm();
 
+    /**
+     * Method to substitute the default text (placeholder)
+     * @param field
+     * @param text
+     */
     public static void SetPlaceholder(Combo field, String text) { // метод для подстановки текста по умолчанию (placeholder)
         field.addPaintListener(new PaintListener() {
             @Override
@@ -42,6 +53,11 @@ public class SWTTable {
         });
     }
 
+    /**
+     * Method of substituting values into a table
+     * @param table
+     * @param customers
+     */
     public static void SetTableRows(Table table, ArrayList<Customer> customers) {  // метод подстановки значений в таблицу
         table.removeAll();
         for (Customer customer : customers) {
@@ -56,6 +72,11 @@ public class SWTTable {
         }
     }
 
+    /**
+     * Search button click handling method
+     * @param group
+     * @param table
+     */
     public void initFilters(Group group, Table table) {  // метод обработки нажатия кнопки поиска
         Button find = new Button(group, SWT.NONE);
         find.setText("поиск");
@@ -75,6 +96,9 @@ public class SWTTable {
             }
         });
 
+        /**
+         * Method add button for adding fields and search terms
+         */
         Button add = new Button(group, SWT.NONE);   //кнопка добавления полей и условия поиска
         add.setText("добавить условие");
         add.setBounds(500, 20, 140, 30);
@@ -89,6 +113,11 @@ public class SWTTable {
         });
     }
 
+    /**
+     * Output table initialization method
+     * @param group
+     * @return
+     */
     public static Table initTable(Group group) {     //метод инициализации таблицы вывода
         Table table = new Table(group, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         table.setHeaderVisible(true);
@@ -108,7 +137,10 @@ public class SWTTable {
         return table;
     }
 
-
+    /**
+     * Main method - program entry point
+     * @param args
+     */
     public static void main(String[] args) {
 
         Display display = new Display();
