@@ -13,9 +13,17 @@ import static net.proselyte.customerdemo.database.SqlConstants.ALLCustomers;
 import static net.proselyte.customerdemo.filters.FiltersForm.conditionGroup;
 import static net.proselyte.customerdemo.filters.FiltersForm.subConditionGroup;
 
-
+/**
+ * This class to generate the SQL request
+ * @author Maxim Eliseev
+ * @version 1.0
+ */
 public class FilterText {
 
+    /**
+     * Method getting the search string
+     * @return query
+     */
     public static String getSql() { // полуение строки поиска
         String where = "";
         for (Map.Entry<Integer, Group> entry : conditionGroup.entrySet()) {
@@ -44,6 +52,11 @@ public class FilterText {
         return query; // строка запроса SQL
     }
 
+    /**
+     * Method getting a condition
+     * @param group
+     * @return condition
+     */
     public static Map<String, String> getCondition(Group group) { // получение условия
         Map<String, String> condition = new HashMap<>();
         for (Control ctrl : group.getChildren()) {
@@ -69,6 +82,12 @@ public class FilterText {
         return condition;
     }
 
+    /**
+     * Method building a search string
+     * @param entry
+     * @param subQuery
+     * @return sql
+     */
     public static String prepareCondition(Map.Entry<Integer, Group> entry, String subQuery) { // построение строки поиска
         Group group = entry.getValue();
         Map<String, String> condition = getCondition(group);
@@ -88,6 +107,11 @@ public class FilterText {
         return  " (" + sql + ") ";
     }
 
+    /**
+     * Method getting values for building a search string
+     * @param map
+     * @return
+     */
     public static String sqlBuilder(Map<String, String> map) { // получение значений для построения строки поиска
         String attribute = map.get("attribute");
         String operator = map.get("operator");
