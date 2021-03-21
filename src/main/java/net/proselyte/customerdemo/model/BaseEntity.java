@@ -7,7 +7,9 @@ import lombok.ToString;
 import javax.persistence.*;
 
 /**
- * Базовый класс - class with property ID
+ * Basic class - class with property ID
+ * @author Maxim Eliseev
+ * @version 1.0
  */
 
 @MappedSuperclass
