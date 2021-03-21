@@ -7,6 +7,11 @@ import org.eclipse.swt.widgets.Text;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class not use @see FilterText.java
+ * @author Maxim Eliseev
+ * @version 0.1 demo
+ */
 public class QueryBuilder { // старый класс для построение запроса в базу данных
     SWTTable table = new SWTTable();
 
