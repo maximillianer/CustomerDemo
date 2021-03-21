@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- *
+ * This class  - controller for REST SERVISE api
  */
 
 @RestController
@@ -24,7 +24,11 @@ public class CustomerRestControllerV1 {
     @Autowired
     private CustomerService customerService;
 
-    // получить customer по ID
+    /**
+     * Get Customer
+      * @param customerId
+     * @return
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long customerId){
         if (customerId == null){
@@ -39,7 +43,11 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
 
-    // добавить customer
+    /**
+     * Save Customer
+      * @param customer
+     * @return
+     */
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Customer> saveCustomer(@RequestBody @Valid Customer customer){
         HttpHeaders headers = new HttpHeaders();
@@ -51,7 +59,12 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<>(customer, headers, HttpStatus.CREATED);
     }
 
-    //получить customer
+    /**
+     * Update Customer
+      * @param customer
+     * @param builder
+     * @return
+     */
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Customer> updateCustomer(@RequestBody @Valid Customer customer, UriComponentsBuilder builder){
         HttpHeaders headers = new HttpHeaders();
@@ -64,7 +77,11 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<>(customer, headers, HttpStatus.OK);
     }
 
-    //удалить customer
+    /**
+     * Delete Customer
+      * @param id
+     * @return
+     */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
      public ResponseEntity<Customer> deleteCustomer (@PathVariable("id") Long id){
         Customer customer = this.customerService.getById(id);
@@ -77,8 +94,11 @@ public class CustomerRestControllerV1 {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
      }
 
-     //получить всех customers
-     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // получить customers
+    /**
+     * Get All Customers
+      * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE) // получить customers
      private ResponseEntity<List<Customer>> getAllCustomers(){
          List<Customer> customers = this.customerService.getAll();
 
