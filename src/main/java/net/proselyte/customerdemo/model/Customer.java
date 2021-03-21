@@ -10,7 +10,9 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
- * простой объект JavaBean domain отвечающий за клиента
+ * Simple JavaBean domain in charge of the client
+ * @author Maxim Eliseev
+ * @version 1.0
  */
 
 @Entity
