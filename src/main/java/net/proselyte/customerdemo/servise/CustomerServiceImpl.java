@@ -8,6 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * This class for working with Customers
+ * @author Maxim Eliseev
+ * @version 1.0
+ */
+
 @Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService{
