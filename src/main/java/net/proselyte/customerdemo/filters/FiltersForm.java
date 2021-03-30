@@ -1,8 +1,7 @@
 package net.proselyte.customerdemo.filters;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import static net.proselyte.customerdemo.database.DBArrays.*;
 
 /**
  * Class for dynamically building search queries in a window
+ *
  * @version 1.0
  * @autor Maxim Eliseev
  */
@@ -19,10 +19,11 @@ public class FiltersForm {
     int conditionGroupCount = 0; // каунтер количетсва групп
     public static Map<Integer, Group> conditionGroup = new HashMap<>(); // группы поиска
     public static Map<Integer, Integer> subConditionGroupCount = new HashMap<>(); // количество подгрупп поиска
-    public static HashMap<Integer, HashMap<Integer, Group>> subConditionGroup = new HashMap<Integer, HashMap<Integer, Group>>();//значения в догруппах
+    public static HashMap<Integer, HashMap<Integer, Group>> subConditionGroup = new HashMap<Integer, HashMap<Integer, Group>>();//значения в подгруппах
 
     /**
      * Method add rowGroup for window parametrs of search
+     *
      * @param containerGroup
      */
     public void addConditionGroup(Group containerGroup) { // добавить поле условия
@@ -38,14 +39,14 @@ public class FiltersForm {
 
         initCondition(rowGroup, orderId);
         initAttribute(rowGroup);
-        initOperator(rowGroup);
-        initValue(rowGroup);
+        initOperator(rowGroup, orderId);
         initButtonSub(containerGroup, rowGroup, rowID, orderId);
         initButtonRemove(containerGroup, rowGroup, rowID);
     }
 
     /**
      * Method deleted Group
+     *
      * @param group
      * @param rowID
      */
@@ -56,6 +57,7 @@ public class FiltersForm {
 
     /**
      * Method deleted Subgroup
+     *
      * @param group
      * @param rowID
      */
@@ -73,12 +75,13 @@ public class FiltersForm {
 
     /**
      * Method substitution of the hunt operator in the hunt group ignoring the first group
+     *
      * @param rowGroup
      * @param orderId
      */
     public void initCondition(Group rowGroup, int orderId) { // подставление оператора поиска в группу поиска игнорируя первую группу
         if (orderId > 0) {
-            Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
+            Combo input = new Combo(rowGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
             input.setBounds(10, 20, 60, 20);
             input.setItems(SQLOperators);
             input.select(0);
@@ -86,40 +89,122 @@ public class FiltersForm {
         }
     }
 
+    public void initBetweenCondition(Group rowGroup) { // подставление оператора поиска в группу поиска по оператору Between
+
+        Combo input = new Combo(rowGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+        input.setBounds(370, 20, 50, 20);
+        input.setItems("AND");
+        input.select(0);
+        input.setData("ID", "betweenCondition");
+
+    }
+
     /**
      * Method value substitution
+     *
      * @param rowGroup
      */
     public void initAttribute(Group rowGroup) { // подставление значения
-        Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
+        Combo input = new Combo(rowGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
         input.setBounds(80, 20, 120, 20);
         input.setItems(SQLValues);
         input.setData("ID", "attribute");
+        final String VALUE = "условие";
+        input.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+        input.addPaintListener(new PaintListener() {
+            @Override
+            public void paintControl(PaintEvent event) {
+                if (input.getText().isEmpty()) {
+                    int x = 2; // indent some pixels
+                    int y = 2; // center vertically
+                    event.gc.drawText(VALUE, x, y);
+                }
+            }
+        });
+        input.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent) {
+                initValue(rowGroup);
+                String typex = input.getText();
+                if (typex.equals("first_name") || typex.equals("last_name")) {
+
+                }
+                System.out.println("выбрано: " + typex);
+
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent selectionEvent) {
+
+            }
+        });
     }
 
     /**
      * Method substitution of an operator from an array of values into DBArrays
+     *
      * @param rowGroup
+     * @param orderId
      */
-        public void initOperator(Group rowGroup) { // подставление оператора из массива значений в DBArrays
-        Combo input = new Combo(rowGroup, SWT.DROP_DOWN);
+    public void initOperator(Group rowGroup, int orderId) { // подставление оператора из массива значений в DBArrays
+        Combo input = new Combo(rowGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
         input.setBounds(210, 20, 60, 20);
         input.setItems(SQLMathematicOperators);
         input.setData("ID", "operator");
+        final String VALUE = "оператор";
+        input.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+        input.addPaintListener(new PaintListener() {
+            @Override
+            public void paintControl(PaintEvent event) {
+                if (input.getText().isEmpty()) {
+                    int x = 2; // indent some pixels
+                    int y = 2; // center vertically
+                    event.gc.drawText(VALUE, x, y);
+                }
+            }
+        });
+        input.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent) {
+                String typex = input.getText();
+                if (typex.equals("BETWEEN")) {
+                    System.out.println("выбраано условие: " + typex);
+                    initBetweenCondition(rowGroup);
+                    initValueBetween(rowGroup);
+
+                }
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent selectionEvent) {
+
+            }
+        });
     }
+
 
     /**
      * Method substitution search field by value
+     *
      * @param rowGroup
      */
     public void initValue(Group rowGroup) { // подставление поле поиска по значению
         Text input = new Text(rowGroup, SWT.BORDER);
-        input.setBounds(280, 20, 120, 23);
+        input.setBounds(280, 20, 90, 23);
         input.setData("ID", "value");
+
+    }
+
+    public void initValueBetween(Group rowGroup) { // подставление поле поиска по значению
+        Text input = new Text(rowGroup, SWT.BORDER);
+        input.setBounds(420, 20, 80, 23);
+        input.setData("ID", "betweenvalue");
+
     }
 
     /**
      * Method substitution of the add subcondition button
+     *
      * @param containerGroup
      * @param rowGroup
      * @param rowID
@@ -142,6 +227,7 @@ public class FiltersForm {
 
     /**
      * Method substitution of the delete hunt group button
+     *
      * @param containerGroup
      * @param rowGroup
      * @param rowID
@@ -163,6 +249,7 @@ public class FiltersForm {
 
     /**
      * Method add a search subcondition field
+     *
      * @param containerGroup
      * @param rowGroup
      * @param rowID
@@ -196,13 +283,14 @@ public class FiltersForm {
 
         initCondition(subGroup, orderId + 1);
         initAttribute(subGroup);
-        initOperator(subGroup);
+        initOperator(subGroup, orderId);
         initValue(subGroup);
         initButtonSubRemove(containerGroup, rowGroup, rowID, subGroup, subID);
     }
 
     /**
      * Method adding a button to delete a search subgroup
+     *
      * @param containerGroup
      * @param rowGroup
      * @param rowID
@@ -226,6 +314,7 @@ public class FiltersForm {
 
     /**
      * System delete search subgroup method
+     *
      * @param group
      * @param rowID
      * @param subID
@@ -237,6 +326,7 @@ public class FiltersForm {
 
     /**
      * a method to visually delete a search subgroup
+     *
      * @param group
      * @param rowID
      * @param subID
@@ -253,8 +343,13 @@ public class FiltersForm {
         }
     }
 
+    public void renderSearch() {
+
+    }
+
     /**
      * Method for redrawing content when adding and removing hunt groups
+     *
      * @param containerGroup
      */
     public void render(Group containerGroup) { // метод перерисовки контента при добавлении и удалении групп поиска

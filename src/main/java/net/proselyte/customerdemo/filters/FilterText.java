@@ -108,7 +108,7 @@ public class FilterText {
     }
 
     /**
-     * Method getting values for building a search string
+     * Method  getting values for building a search string
      * @param map
      * @return
      */
@@ -116,15 +116,17 @@ public class FilterText {
         String attribute = map.get("attribute");
         String operator = map.get("operator");
         String value = map.get("value");
+        String betweenCondition = map.get("betweenCondition");
+        String betweenvalue = map.get("betweenvalue");
 
-        if(attribute == null || operator == null || value == null){
+        if(attribute == null || operator == null || value == null || betweenCondition == null || betweenvalue == null){
             return  "";
         }
 
-        if(attribute.isEmpty() || operator.isEmpty() || value.isEmpty()){
+        if(attribute.isEmpty() || operator.isEmpty() || value.isEmpty() || betweenCondition.isEmpty() || betweenvalue == null){
             return  "";
         }
 
-        return attribute+" "+operator+" '"+value+"'";
+        return attribute+" "+operator+" '"+value+"' "+betweenCondition+" '"+betweenvalue+"' ";
     }
 }
