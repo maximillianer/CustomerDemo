@@ -46,10 +46,10 @@ class DBConnection {
     public void open () throws SQLException, ClassNotFoundException {
         if (!this.isOpen) {
             try {
-                Class.forName(this.driver);
-                Connection con = DriverManager.getConnection(this.url, this.user, this.password);
-                this.stmt = con.createStatement();
-                this.isOpen = true;
+               Class.forName(this.driver);
+               Connection con = DriverManager.getConnection(this.url, this.user, this.password);
+               this.stmt = con.createStatement();
+               this.isOpen = true;
 
             } catch (Exception e) {
                 e.printStackTrace();
